@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+*.gguf
+*.bin
+*.safetensors
+.venv/
+node_modules/
+*.log
+.DS_Store
+data/raw/
+data/cache/
+*.dump

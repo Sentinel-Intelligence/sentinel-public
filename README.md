@@ -4,7 +4,7 @@
 [![Website](https://img.shields.io/badge/Web-sentinelintel.org-cyan)](https://sentinelintel.org)
 [![XRPL Provenance](https://img.shields.io/badge/XRPL-239%20Proofs-purple)](https://livenet.xrpl.org/accounts/rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV)
 
-**The largest open graph of congressional influence ever built.**
+**Among the largest open graphs of congressional influence ever built.**
 
 429K entities · 7.29M connections · 15+ federal databases · AUC 0.9575
 
@@ -33,7 +33,7 @@ A fine-tuned **Sentinel Oracle** (Qwen2.5-14B) translates natural language quest
 
 ## Key Findings
 
-- **Behavioral Sorting:** Reform pressure split Congress into Quitters (20+ stopped trading), Defiant (15+ continued), and Whales (fewer trades, massive dollars)
+- **Behavioral Sorting:** Reform pressure split Congress into Quitters (40 stopped trading), Defiant (14 continued), and Whales (28; fewer trades, massive dollars)
 - **Sell Spike:** Sell-side activity spiked to 62.1% in Q3 2023, collapsed to 12.4% in Q4 2024 when the ban failed
 - **Jurisdiction Conflicts:** Legislators continue trading stocks under their own committee's jurisdiction
 - **CHIPS Act Window:** 18 semiconductor trades by members of Congress during the June-September 2022 legislative window
@@ -52,7 +52,7 @@ scripts/
 
 ## Citation
 
-> Sentinel Intelligence. (2026). Mapping Institutional Capture: A Graph-Based Framework for Detecting Political Influence Networks in U.S. Congressional Financial Disclosures. Presented at IC2S2 2026.
+> Sentinel Intelligence. (2026). Mapping Institutional Capture: A Graph-Based Framework for Detecting Political Influence Networks in U.S. Congressional Financial Disclosures. Submitted to IC2S2 2026.
 
 ## Links
 

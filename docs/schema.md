@@ -2,8 +2,8 @@
 
 ## Summary
 
-- **Nodes:** ~427,000 across 55 labels
-- **Edges:** ~7,240,000 across 94 relationship types
+- **Nodes:** ~427,000 across 58 labels
+- **Edges:** ~7,240,000 across 98 relationship types
 
 ## Key Node Labels
 

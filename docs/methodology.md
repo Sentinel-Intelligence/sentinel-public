@@ -27,7 +27,7 @@ Raw scores are min-max normalized within each dimension, then weighted and summe
 ## Validation
 
 - **Burry Module AUC:** 0.9575 (GraphSAGE), 0.9588 (MLP), 0.9362 (XGBoost)
-- **Ground truth:** 31 audited cases of closed-loop corruption
+- **Ground truth:** 34 audited cases of closed-loop corruption
 - **Behavioral archetypes:** 82 legislators classified — 28 whale, 14 defiant, 40 quitter
 
 ## IRONCLAD Standard

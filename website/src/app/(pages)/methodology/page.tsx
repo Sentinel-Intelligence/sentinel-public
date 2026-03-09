@@ -87,7 +87,7 @@ export default function MethodologyPage() {
               <div className="text-cyan-500 mt-0.5 shrink-0">▸</div>
               <div>
                 <div className="text-gray-200 font-semibold text-sm">{s.name}</div>
-                <div className="text-gray-500 text-xs mt-0.5">{s.desc}</div>
+                <p className="text-gray-500 text-xs mt-0.5">{s.desc}</p>
               </div>
             </div>
           ))}

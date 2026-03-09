@@ -68,6 +68,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={`${instrumentSerif.variable} ${dmSans.variable} ${jetbrainsMono.variable} font-mono antialiased bg-gray-950 text-gray-100`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if('serviceWorker'in navigator){navigator.serviceWorker.getRegistrations().then(function(r){for(let reg of r){reg.unregister()}})}`,
+          }}
+        />
         <Navigation />
         <main className="pt-20">
           {children}

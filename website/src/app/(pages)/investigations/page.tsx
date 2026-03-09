@@ -209,15 +209,15 @@ export default function InvestigationsPage() {
       <div className="mt-6 grid sm:grid-cols-3 gap-4 text-xs text-gray-600 font-mono">
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
           <div className="text-gray-400 font-semibold mb-1">Node size</div>
-          IES score — larger = more deeply embedded in influence networks
+          <p>IES score — larger = more deeply embedded in influence networks</p>
         </div>
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
           <div className="text-gray-400 font-semibold mb-1">Red heat glow</div>
-          IES ≥ 20 — node&apos;s sphere of influence extends well beyond direct donations
+          <p>IES ≥ 20 — node&apos;s sphere of influence extends well beyond direct donations</p>
         </div>
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
           <div className="text-gray-400 font-semibold mb-1">Cyan edges</div>
-          Two legislators traded shares of the same company in the same calendar month
+          <p>Two legislators traded shares of the same company in the same calendar month</p>
         </div>
       </div>
     </section>

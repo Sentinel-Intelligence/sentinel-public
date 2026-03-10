@@ -33,12 +33,12 @@ def merkle_root(items: list) -> str:
 
 def anchor_to_xrpl(data_hash: str, event: str, wallet_seed: str = None):
     """
-    Anchor a hash to XRPL via self-send Payment with Memo.
+    Anchor a hash to XRPL via AccountSet with Memo (zero value transfer).
     Requires: pip install xrpl-py
     """
     try:
         from xrpl.clients import JsonRpcClient
-        from xrpl.models import Payment, Memo
+        from xrpl.models import AccountSet, Memo
         from xrpl.transaction import submit_and_wait
         from xrpl.wallet import Wallet
     except ImportError:
@@ -60,9 +60,9 @@ def anchor_to_xrpl(data_hash: str, event: str, wallet_seed: str = None):
         memo_type=bytes("sentinel/proof", "utf-8").hex(),
     )
 
-    tx = Payment(
-        account=wallet.address, destination=wallet.address,
-        amount="10", memos=[memo],
+    tx = AccountSet(
+        account=wallet.address,
+        memos=[memo],
     )
 
     result = submit_and_wait(tx, client, wallet)

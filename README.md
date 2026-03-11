@@ -81,8 +81,8 @@ scripts/
 |--------|-------|
 | Nodes | 465,263 |
 | Edges | 7,341,318 |
-| Node Labels | 58 |
-| Relationship Types | 98 |
+| Node Labels | 67 |
+| Relationship Types | 104 |
 | Legislators Scored (IES v3.5) | 1,228 / 1,228 (100%) |
 | XRPL Provenance Proofs | 295 (mainnet, verified) |
 | SAME_AS Entity Resolution Edges | 46,695 |
@@ -93,7 +93,7 @@ scripts/
 Sentinel is in active development. The full ingestion pipeline, Oracle deployment scripts, and Neo4j load procedures will be published following completion of the peer review process for our IC2S2 2026 submission.
 
 **What's here now:**
-- Full graph schema documentation (58 labels, 104 relationship types)
+- Full graph schema documentation (67 labels, 104 relationship types)
 - IES v3.5 methodology and validation
 - 10 documented Cypher query examples
 - XRPL provenance anchoring script

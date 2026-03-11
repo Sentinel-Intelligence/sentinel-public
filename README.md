@@ -6,7 +6,7 @@
 
 **Among the largest open graphs of congressional influence ever built.**
 
-429K entities · 7.29M connections · 15+ federal databases · AUC 0.9575
+465K entities · 7.34M connections · 15+ federal databases · AUC 0.9575
 
 ---
 
@@ -43,7 +43,7 @@ A fine-tuned **Sentinel Oracle** (Qwen2.5-14B) translates natural language quest
 ```
 docs/
   methodology.md    — IES v3.5 full specification and validation
-  schema.md         — Graph schema: 58 node labels, 98 relationship types
+  schema.md         — Graph schema: 67 node labels, 104 relationship types
   data_sources.md   — All federal data sources with URLs and update frequencies
 scripts/
   cypher_examples.py — 10 example Cypher queries with documentation
@@ -65,7 +65,7 @@ scripts/
 *Built with public federal data. 100% IRONCLAD provenance.*
 *© 2026 Sentinel Intelligence LLC. MIT License.*
 
-## Oracle Benchmark (March 1, 2026)
+## Oracle Benchmark (March 10, 2026)
 
 | Metric | Value |
 |--------|-------|
@@ -75,16 +75,16 @@ scripts/
 | Test Set | 72 held-out domain queries |
 | Baseline (no schema hints) | 97.2% (70/72) |
 
-## Verified Graph Statistics (March 1, 2026)
+## Verified Graph Statistics (March 10, 2026)
 
 | Metric | Value |
 |--------|-------|
-| Nodes | 429,332 |
-| Edges | 7,296,068 |
+| Nodes | 465,263 |
+| Edges | 7,341,318 |
 | Node Labels | 58 |
 | Relationship Types | 98 |
 | Legislators Scored (IES v3.5) | 1,228 / 1,228 (100%) |
-| XRPL Provenance Proofs | 239 (mainnet, verified) |
+| XRPL Provenance Proofs | 295 (mainnet, verified) |
 | SAME_AS Entity Resolution Edges | 46,695 |
 | Stock Trades (TRADED_STOCK) | 16,238 |
 
@@ -93,17 +93,13 @@ scripts/
 Sentinel is in active development. The full ingestion pipeline, Oracle deployment scripts, and Neo4j load procedures will be published following completion of the peer review process for our IC2S2 2026 submission.
 
 **What's here now:**
-- Full graph schema documentation (58 labels, 98 relationship types)
+- Full graph schema documentation (58 labels, 104 relationship types)
 - IES v3.5 methodology and validation
 - 10 documented Cypher query examples
 - XRPL provenance anchoring script
 - All 15+ federal data source specifications
 
-**Coming soon:**
-- Phoenix ingestion pipeline (Scrapy-based federal data ETL)
-- Oracle Modelfile and deployment configuration
-- SCIP continuous integration modules
-- Benchmark test suite and results
+Additional tooling will be published following completion of the IC2S2 2026 peer review process.
 
 ## Academic & Government Submissions
 

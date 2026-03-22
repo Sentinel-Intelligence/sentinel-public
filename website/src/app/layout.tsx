@@ -40,7 +40,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://sentinelintel.org'),
   title: 'Sentinel Intelligence: Congressional Influence Graph & Political Finance Data',
-  description: 'The largest open graph of congressional influence ever built. Mapping political finance, insider trading, lobbying, and dark money flows across 463K entities and 7.3M connections.',
+  description: 'The largest open graph of congressional influence ever built. Mapping political finance, insider trading, lobbying, and dark money flows across 33M+ entities and 7.3M+ connections.',
   alternates: {
     canonical: 'https://sentinelintel.org',
   },

@@ -45,7 +45,7 @@ export default function HomePage() {
             ever built
           </h1>
           <p className="text-lg text-gray-300 mb-4 max-w-xl hero-animate" style={{ animationDelay: '200ms' }}>
-            463K entities. 7.3M connections. Every dollar traced.
+            33M+ entities. 7.3M+ connections. Every dollar traced.
           </p>
           <p className="text-gray-400 max-w-xl leading-relaxed text-sm hero-animate" style={{ animationDelay: '300ms' }}>
             Sentinel maps the full network of political finance — campaign donors, federal
@@ -76,7 +76,7 @@ export default function HomePage() {
         <div className="text-center mb-6">
           <div className="text-cyan-500 text-xs tracking-widest uppercase mb-2">Sentinel Oracle</div>
           <h2 className="text-2xl font-bold mb-2">Ask the knowledge graph anything</h2>
-          <p className="text-gray-400 text-sm">Natural language queries against 463K entities and 7.3M edges</p>
+          <p className="text-gray-400 text-sm">Natural language queries against 33M+ entities and 7.3M+ edges</p>
         </div>
         <OracleSearchBar onQuerySubmit={handleOracleSubmit} />
       </div>

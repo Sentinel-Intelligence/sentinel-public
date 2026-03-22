@@ -4,7 +4,7 @@ import GraphClient from './GraphClient'
 
 export const metadata: Metadata = {
   title: 'Interactive Knowledge Graph | Sentinel Intelligence',
-  description: 'Natural language queries against 463K entities and 7.3M connections. Explore congressional stock trades, lobbying networks, dark money flows, and influence loops.',
+  description: 'Natural language queries against 33M+ entities and 7.3M+ connections. Explore congressional stock trades, lobbying networks, dark money flows, and influence loops.',
   alternates: {
     canonical: 'https://sentinelintel.org/graph',
   },
@@ -26,7 +26,7 @@ export default function GraphPage() {
 
         <p>
           The Sentinel knowledge graph is the largest open dataset of congressional influence ever assembled.
-          As of 2026, the graph contains <strong className="text-gray-100">463,670 nodes</strong> and{' '}
+          As of 2026, the graph contains <strong className="text-gray-100">33M+ nodes</strong> and{' '}
           <strong className="text-gray-100">7,338,730 edges</strong> spanning{' '}
           <strong className="text-gray-100">67 entity types</strong> and{' '}
           <strong className="text-gray-100">104 relationship types</strong>, constructed from 15 federal databases.

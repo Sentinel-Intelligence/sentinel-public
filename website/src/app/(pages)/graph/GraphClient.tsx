@@ -230,7 +230,7 @@ export default function GraphClient() {
           <div className="py-16 text-center">
             <div className="text-gray-600 font-mono text-sm mb-2">Oracle ready</div>
             <div className="text-xs text-gray-700 font-mono">
-              463K entities · 7.3M edges · natural language queries
+              33M+ entities · 7.3M+ edges · natural language queries
             </div>
           </div>
         )}

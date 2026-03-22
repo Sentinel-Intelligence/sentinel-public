@@ -7,7 +7,7 @@ export interface OracleResponse {
 }
 
 export async function queryOracle(query: string): Promise<OracleResponse> {
-  const res = await fetch('https://api.sentinelintel.org/oracle', {
+  const res = await fetch('https://api.sentinelintel.org/cypher', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query }),

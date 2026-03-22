@@ -14,7 +14,7 @@ const SHUTTERED = [
 ]
 
 // IC2S2 frozen stats
-const GRAPH_STATS = { nodes: 463670, edges: 7338730, trades: 16238 }
+const GRAPH_STATS = { nodes: 33003274, edges: 7300000, trades: 16238 }
 
 export default function HomePage() {
   const router = useRouter()

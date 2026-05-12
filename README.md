@@ -6,7 +6,7 @@
 
 **Among the largest open graphs of congressional influence ever built.**
 
-33M+ entities · 7.3M+ connections · 15+ federal databases · AUC 0.9575
+33M+ entities · 72.88M+ connections · 15+ federal databases · AUC 0.9575
 
 ---
 

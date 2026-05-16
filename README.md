@@ -16,7 +16,7 @@ Sentinel is a Neo4j knowledge graph that fuses 15+ public federal databases to m
 
 The system scores all 1,228 current and recent legislators with the **Influence Exposure Score (IES v3.5)**, validated at AUC 0.9575 across multiple models on 34 audited cases of closed-loop corruption.
 
-A fine-tuned **Sentinel Oracle** (Qwen2.5-14B) translates natural language questions into executable Cypher queries with 98.6% execution accuracy (71/72 held-out queries, 100% syntax validity). Every node, edge, and score is anchored to the XRPL blockchain for immutable public provenance.
+Every node, edge, and score is anchored to the XRPL blockchain for immutable public provenance.
 
 ## Data Sources
 
@@ -63,17 +63,8 @@ scripts/
 ---
 
 *Built with public federal data. 100% IRONCLAD provenance.*
+*Patent Pending — USPTO SENTINEL-STYX-PROV-001 (encrypted agent communication protocol)*
 *© 2026 Sentinel Intelligence LLC. MIT License.*
-
-## Oracle Benchmark (March 10, 2026)
-
-| Metric | Value |
-|--------|-------|
-| Execution Accuracy | **98.6%** (71/72) |
-| Syntax Validity | **100%** (72/72) |
-| Model | Qwen2.5-14B (LoRA fine-tuned on 20,055 Cypher pairs) |
-| Test Set | 72 held-out domain queries |
-| Baseline (no schema hints) | 97.2% (70/72) |
 
 ## Verified Graph Statistics (March 10, 2026)
 
@@ -90,7 +81,7 @@ scripts/
 
 ## Current Status
 
-Sentinel is in active development. The full ingestion pipeline, Oracle deployment scripts, and Neo4j load procedures will be published following completion of the peer review process for our IC2S2 2026 submission.
+Sentinel is in active development. The full ingestion pipeline and Neo4j load procedures will be published following completion of the peer review process for our IC2S2 2026 submission.
 
 **What's here now:**
 - Full graph schema documentation (67 labels, 104 relationship types)

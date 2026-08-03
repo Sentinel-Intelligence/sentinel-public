@@ -13,7 +13,7 @@
 
 ## Methodology & Validation
 
-- [Methodology](https://sentinelintel.org/methodology/): Five-stage ingestion pipeline, Influence Vortex Model (8 dimensions), IES v3.5 scoring (AUC 0.9575), XRPL blockchain provenance
+- [Methodology](https://sentinelintel.org/methodology/): Five-stage ingestion pipeline, Influence Vortex Model (8 dimensions), IES v3.5 scoring, XRPL blockchain provenance
 - [About](https://sentinelintel.org/about/): Mission, principles, MIT license, IC2S2 2026 academic submission
 
 ## API & Data Access

@@ -6,7 +6,7 @@
 
 **Among the largest open graphs of congressional influence ever built.**
 
-33M+ entities · 72.88M+ connections · 15+ federal databases · AUC 0.9575
+33M+ entities · 72.88M+ connections · 10 federal databases
 
 ---
 
@@ -14,7 +14,7 @@
 
 Sentinel is a Neo4j knowledge graph that fuses 15+ public federal databases to map influence networks in the U.S. Congress. Every legislator, company, PAC, lobbyist, trade, donation, and committee relationship is connected in a single queryable graph.
 
-The system scores all 1,228 current and recent legislators with the **Influence Exposure Score (IES v3.5)**, validated at AUC 0.9575 across multiple models on 34 audited cases of closed-loop corruption.
+The system scores all 1,228 current and recent legislators with the **Influence Exposure Score (IES v3.5)**.
 
 Every node, edge, and score is anchored to the XRPL blockchain for immutable public provenance.
 

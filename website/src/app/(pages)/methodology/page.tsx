@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Methodology: IES v3.5 Influence Scoring | Sentinel Intelligence',
-  description: 'How Sentinel builds its congressional influence graph: 10 federal databases, the 8-dimension Influence Vortex Model, dual-pipeline verification, and XRPL blockchain provenance.',
+  title: 'Methodology | Sentinel Intelligence',
+  description: 'How Sentinel ingests federal political-finance filings, binds provenance, and what we will not claim.',
   alternates: {
     canonical: 'https://sentinelintel.org/methodology',
   },
@@ -54,14 +54,14 @@ export default function MethodologyPage() {
           ))}
         </div>
         <p className="text-gray-500 text-xs">
-          Every record flows through entity resolution, graph construction, IES scoring, and
+          Every record flows through entity resolution, graph construction, scoring, and
           XRPL timestamping before publication.
         </p>
       </div>
 
       {/* 8 Influence Dimensions */}
       <div className="mb-12">
-        <h2 className="text-cyan-300 font-semibold mb-5">Influence Vortex Model — 8 Dimensions</h2>
+        <h2 className="text-cyan-300 font-semibold mb-5">How influence is structured in the graph</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {DIMENSIONS.map(dim => (
             <div key={dim} className="bg-gray-900 border border-gray-800 rounded-lg p-3 text-center text-xs font-medium text-gray-300">
@@ -98,7 +98,7 @@ export default function MethodologyPage() {
       <h2 className="text-cyan-300 font-semibold mb-4">Validation & Architecture</h2>
       <div className="grid md:grid-cols-2 gap-4">
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
-          <div className="text-cyan-400 font-bold text-sm mb-1">IES v3.5 Scoring</div>
+          <div className="text-cyan-400 font-bold text-sm mb-1">Scoring (research use)</div>
           <p className="text-gray-400 text-sm">Influence Exposure Score integrating donation, contract, and lobbying network proximity.</p>
         </div>
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
@@ -110,7 +110,7 @@ export default function MethodologyPage() {
           <p className="text-gray-400 text-sm">Every ingestion event timestamped on XRPL. Immutable audit trail across the graph.</p>
         </div>
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
-          <div className="text-cyan-400 font-bold text-sm mb-1">Sentinel Oracle (In Development)</div>
+          <div className="text-cyan-400 font-bold text-sm mb-1">Natural-language access (in development)</div>
           <p className="text-gray-400 text-sm">Natural language query interface for the knowledge graph. Offline while dedicated serving capacity is provisioned.</p>
         </div>
       </div>

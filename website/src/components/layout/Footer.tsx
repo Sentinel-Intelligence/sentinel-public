@@ -1,12 +1,14 @@
 export default function Footer() {
   return (
     <footer className="border-t border-gray-800 mt-24 px-6 py-10 text-center text-gray-500 text-sm">
-      <p className="mb-2">© 2026 Sentinel Intelligence LLC · MIT License · Built with public federal data</p>
-      <p className="mb-4">Built with Neo4j · Python · Qwen2.5 · XRPL</p>
+      <p className="mb-2">
+        © 2026 Sentinel Intelligence LLC · MIT License · Public federal data
+      </p>
+      <p className="mb-4 text-xs text-gray-600 max-w-lg mx-auto leading-relaxed">
+        What we show is what we ingested. We can prove when, and that we have not
+        altered it since. We cannot prove the filer told the truth.
+      </p>
       <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-gray-600">
-        <span className="border border-gray-800 px-3 py-1 rounded">
-          IC2S2 2026 — Accepted
-        </span>
         <a
           href="https://github.com/Sentinel-Intelligence/sentinel-public"
           className="hover:text-gray-400 transition-colors border border-gray-800 px-3 py-1 rounded"

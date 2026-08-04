@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Graph Explorer | Sentinel Intelligence',
-  description: 'Interactive exploration of the Sentinel knowledge graph: 33M+ entities and 73.7M+ connections across congressional stock trades, lobbying networks, dark money flows, and influence loops. Natural-language querying returns soon.',
+  description: 'Interactive exploration of the Sentinel knowledge graph built from federal political-finance filings. No unprovenanced scale totals.',
   alternates: {
     canonical: 'https://sentinelintel.org/graph',
   },
@@ -17,7 +17,7 @@ export default function GraphPage() {
         The interactive explorer is <span className="text-cyan-400">offline</span> for now
       </h1>
       <p className="text-gray-400 mb-4 max-w-xl mx-auto">
-        The Sentinel knowledge graph (33M+ entities, 73.7M+ connections) continues to grow
+        The Sentinel knowledge graph is built from public federal filings and continues to grow
         and powers all published investigations. The natural-language query interface is
         offline while dedicated serving capacity is provisioned, and will return.
       </p>

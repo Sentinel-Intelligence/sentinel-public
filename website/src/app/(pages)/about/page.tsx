@@ -15,7 +15,7 @@ const PRINCIPLES = [
   { Icon: FileCheck2, title: 'Source-Verified', desc: 'Every data point traces to a federal filing.' },
   { Icon: Code2,      title: 'Open Source',     desc: 'Methodology and tools publicly available. MIT License.' },
   { Icon: Unlock,     title: 'Free Forever',    desc: 'No paywall. No premium tier for data.' },
-  { Icon: Microscope, title: 'Self-Skeptical',  desc: 'We publish our limitations and error rates.' },
+  { Icon: Microscope, title: 'Self-Skeptical',  desc: 'We publish limitations, retirements, and what replaced failed claims.' },
 ]
 
 export default function AboutPage() {
@@ -44,13 +44,13 @@ export default function AboutPage() {
         </div>
         <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">
           <div className="mb-3"><Settings2 size={22} className="text-cyan-400" /></div>
-          <div className="font-bold text-cyan-300 mb-2">Pipeline Release</div>
-          <p className="text-gray-400 text-sm">Coming soon: full ingestion pipeline, graph schema, validation notebooks, and fine-tuning recipes.</p>
+          <div className="font-bold text-cyan-300 mb-2">Open tools</div>
+          <p className="text-gray-400 text-sm">Methodology and public tooling under MIT. Graph construction packages release when they meet the same check-us standard as the site claim.</p>
         </div>
         <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">
           <div className="mb-3"><Sparkles size={22} className="text-cyan-400" /></div>
-          <div className="font-bold text-cyan-300 mb-2">Oracle (In Development)</div>
-          <p className="text-gray-400 text-sm">Coming soon: natural language query interface for journalists and researchers. Ask anything about the graph.</p>
+          <div className="font-bold text-cyan-300 mb-2">Query access</div>
+          <p className="text-gray-400 text-sm">Natural-language and API access for journalists and researchers, designed so every answer carries primary-source identifiers where they exist.</p>
         </div>
         <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">
           <div className="mb-3"><Github size={22} className="text-cyan-400" /></div>

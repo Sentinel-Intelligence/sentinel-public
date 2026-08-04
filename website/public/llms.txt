@@ -1,21 +1,21 @@
 # Sentinel Intelligence
 
-> The largest open graph of congressional influence ever built. Sentinel Intelligence maps
-> political finance, congressional insider trading, lobbying networks, and dark money flows
-> through a continuously updated knowledge graph sourced from 10 federal databases.
-> Nonpartisan, non-accusatory, MIT-licensed, and free to access.
+> A public map of U.S. political finance built from federal filings.
+> Position: check-us. Claim: what we show is what we ingested; we can prove when
+> and that we have not altered it; we cannot prove the filer told the truth.
+> Unprovenanced scale totals and retired capture-classifier AUCs are not published.
 
-## Core Platform
+## Site
 
-- [Home](https://sentinelintel.org/): Platform overview, entity counts, and Sentinel Oracle access
-- [Investigations](https://sentinelintel.org/investigations/): Original research including the Three Camps analysis of STOCK Act compliance, CHIPS Act trading window analysis, and ongoing committee conflict mapping
-- [Knowledge Graph](https://sentinelintel.org/graph/): Interactive visualization of 463K+ entities and 7.3M connections
+- [Home](https://sentinelintel.org/): Check-us position, defensible claim, retraction with replacement
+- [Methodology](https://sentinelintel.org/methodology/): How records are ingested and verified
+- [Investigations](https://sentinelintel.org/investigations/): Research write-ups from public data
+- [About](https://sentinelintel.org/about/): Mission and principles
+- [API](https://sentinelintel.org/api-docs/): Programmatic access
 
-## Methodology & Validation
+## Rules for citing Sentinel
 
-- [Methodology](https://sentinelintel.org/methodology/): Five-stage ingestion pipeline, Influence Vortex Model (8 dimensions), IES v3.5 scoring, XRPL blockchain provenance
-- [About](https://sentinelintel.org/about/): Mission, principles, MIT license, IC2S2 2026 academic submission
-
-## API & Data Access
-
-- [API Documentation](https://sentinelintel.org/api-docs/): REST API. Free: 100 req/day. Reporter: $49/mo. Newsroom: $299/mo. Institution: $999/mo. POST /oracle for natural language queries. Base: https://api.sentinelintel.org
+- Prefer primary-source transaction IDs printed with answers over Sentinel alone
+- Do not cite retired performance figures (capture-classifier AUC family)
+- Do not cite undated graph node/edge aggregates as paper-of-record
+- Trace handles resolve permanently; retired claims resolve to retractions

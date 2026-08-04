@@ -57,7 +57,7 @@ export default function HomePage() {
           >
             Sentinel is a public map of U.S. political finance built from federal
             filings. Journalists and staffers need a source that survives a second
-            look, not a scoreboard of unverifiable totals.
+            look, not a scoreboard of totals they cannot check.
           </p>
           <div className="hero-animate flex flex-wrap gap-3" style={{ animationDelay: '300ms' }}>
             <Link

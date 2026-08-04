@@ -13,7 +13,7 @@ sudo cp -r "$OUT"/. "$WEBROOT/"
 
 echo "[deploy] Deploying STYX landing..."
 sudo mkdir -p /var/www/styx
-sudo cp $HOME/projects/lattice/forge/styx/web/index.html /var/www/styx/index.html
+sudo cp /home/toasty/projects/lattice/forge/styx/web/index.html /var/www/styx/index.html
 
 echo "[deploy] Fixing nginx config (adding _next/static immutable block)..."
 sudo tee "$NGINX_CONF" > /dev/null << 'NGINX_EOF'

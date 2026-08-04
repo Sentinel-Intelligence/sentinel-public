@@ -33,7 +33,7 @@ export default function AboutPage() {
       <div className="grid md:grid-cols-2 gap-6 mb-12">
         <div className="bg-gray-900 border border-cyan-800 rounded-lg p-6">
           <div className="mb-3"><FileText size={22} className="text-cyan-400" /></div>
-          <div className="font-bold text-cyan-300 mb-1">IC2S2 2026 — Under Review</div>
+          <div className="font-bold text-cyan-300 mb-1">IC2S2 2026 — Accepted</div>
           <p className="text-gray-500 text-xs italic mb-2">
             &ldquo;Mapping Institutional Capture: A Graph-Based Framework for Detecting Political Influence Networks in U.S. Congressional Financial Disclosures&rdquo;
           </p>
@@ -49,7 +49,7 @@ export default function AboutPage() {
         </div>
         <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">
           <div className="mb-3"><Sparkles size={22} className="text-cyan-400" /></div>
-          <div className="font-bold text-cyan-300 mb-2">Live Oracle</div>
+          <div className="font-bold text-cyan-300 mb-2">Oracle (In Development)</div>
           <p className="text-gray-400 text-sm">Coming soon: natural language query interface for journalists and researchers. Ask anything about the graph.</p>
         </div>
         <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">

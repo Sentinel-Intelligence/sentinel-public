@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Methodology: IES v3.5 Influence Scoring | Sentinel Intelligence',
-  description: 'How Sentinel builds its congressional influence graph: 10 federal databases, 8-dimension Influence Vortex Model, IES v3.5 scoring validated at AUC 0.9575, and XRPL blockchain provenance.',
+  description: 'How Sentinel builds its congressional influence graph: 10 federal databases, the 8-dimension Influence Vortex Model, dual-pipeline verification, and XRPL blockchain provenance.',
   alternates: {
     canonical: 'https://sentinelintel.org/methodology',
   },
@@ -102,16 +102,16 @@ export default function MethodologyPage() {
           <p className="text-gray-400 text-sm">Influence Exposure Score integrating donation, contract, and lobbying network proximity.</p>
         </div>
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
-          <div className="text-cyan-400 font-bold text-sm mb-1">Validated at AUC 0.9575</div>
-          <p className="text-gray-400 text-sm">XGBoost classifier on 420-dim embeddings (384 semantic + 36 graph-structural). Tested across multiple models.</p>
+          <div className="text-cyan-400 font-bold text-sm mb-1">Dual-Pipeline Verification</div>
+          <p className="text-gray-400 text-sm">Key statistics are computed by two independently engineered pipelines sharing only the primary government source, with persisted, hash-verified regeneration runs.</p>
         </div>
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
           <div className="text-cyan-400 font-bold text-sm mb-1">XRPL Blockchain Provenance</div>
-          <p className="text-gray-400 text-sm">Every ingestion event timestamped on XRPL. Immutable audit trail for all 408K+ entities.</p>
+          <p className="text-gray-400 text-sm">Every ingestion event timestamped on XRPL. Immutable audit trail across the graph.</p>
         </div>
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
-          <div className="text-cyan-400 font-bold text-sm mb-1">Sentinel Oracle (NLQ Layer)</div>
-          <p className="text-gray-400 text-sm">Fine-tuned Qwen2.5 model for natural language queries against the Neo4j knowledge graph.</p>
+          <div className="text-cyan-400 font-bold text-sm mb-1">Sentinel Oracle (In Development)</div>
+          <p className="text-gray-400 text-sm">Natural language query interface for the knowledge graph. Offline while dedicated serving capacity is provisioned.</p>
         </div>
       </div>
     </section>

@@ -1,10 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import NetworkCanvas from '@/components/home/NetworkCanvas'
 import { AnimatedStat } from '@/components/shared/AnimatedCounter'
-import OracleSearchBar from '@/components/home/OracleSearchBar'
 
 const SHUTTERED = [
   { name: 'Sunlight Foundation',   year: '2020', note: 'Dissolved' },
@@ -13,16 +11,10 @@ const SHUTTERED = [
   { name: 'OpenSecrets API',       year: '2025', note: 'Discontinued April 2025' },
 ]
 
-// IC2S2 frozen stats
-const GRAPH_STATS = { nodes: 33003274, edges: 7300000, trades: 16238 }
+// Live graph figures (canonical registry 2026-06-07); trades is the frozen paper figure
+const GRAPH_STATS = { nodes: 33189007, edges: 73757213, trades: 16238 }
 
 export default function HomePage() {
-  const router = useRouter()
-
-  const handleOracleSubmit = (q: string) => {
-    router.push(`/graph?q=${encodeURIComponent(q)}`)
-  }
-
   return (
     <section className="max-w-4xl mx-auto px-6">
 
@@ -45,7 +37,7 @@ export default function HomePage() {
             ever built
           </h1>
           <p className="text-lg text-gray-300 mb-4 max-w-xl hero-animate" style={{ animationDelay: '200ms' }}>
-            33M+ entities. 7.3M+ connections. Every dollar traced.
+            33M+ entities. 73.7M+ connections. Every dollar traced.
           </p>
           <p className="text-gray-400 max-w-xl leading-relaxed text-sm hero-animate" style={{ animationDelay: '300ms' }}>
             Sentinel maps the full network of political finance — campaign donors, federal
@@ -69,16 +61,6 @@ export default function HomePage() {
         <AnimatedStat target={GRAPH_STATS.nodes}  label="Entities Mapped" />
         <AnimatedStat target={GRAPH_STATS.edges}  label="Graph Edges" />
         <AnimatedStat target={GRAPH_STATS.trades} label="Stock Trades Analyzed" />
-      </div>
-
-      {/* Oracle search */}
-      <div className="mb-16">
-        <div className="text-center mb-6">
-          <div className="text-cyan-500 text-xs tracking-widest uppercase mb-2">Sentinel Oracle</div>
-          <h2 className="text-2xl font-bold mb-2">Ask the knowledge graph anything</h2>
-          <p className="text-gray-400 text-sm">Natural language queries against 33M+ entities and 7.3M+ edges</p>
-        </div>
-        <OracleSearchBar onQuerySubmit={handleOracleSubmit} />
       </div>
 
       {/* Problem: shuttered tools */}

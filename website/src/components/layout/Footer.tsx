@@ -5,7 +5,7 @@ export default function Footer() {
       <p className="mb-4">Built with Neo4j · Python · Qwen2.5 · XRPL</p>
       <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-gray-600">
         <span className="border border-gray-800 px-3 py-1 rounded">
-          IC2S2 2026 Submission — Under Review
+          IC2S2 2026 — Accepted
         </span>
         <a
           href="https://github.com/Sentinel-Intelligence/sentinel-public"

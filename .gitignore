@@ -12,3 +12,6 @@ data/raw/
 data/cache/
 *.dump
 smelt-agent-server/
+*.pre_auc_strip.*
+*.pre_edge_fix.*
+website/.backups/

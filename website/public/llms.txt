@@ -9,13 +9,15 @@
 
 - [Home](https://sentinelintel.org/): Check-us position, defensible claim, retraction with replacement
 - [Methodology](https://sentinelintel.org/methodology/): How records are ingested and verified
-- [Investigations](https://sentinelintel.org/investigations/): Research write-ups from public data
+- [Investigations](https://sentinelintel.org/investigations/): Investigation standard (no named-legislator promotion)
 - [About](https://sentinelintel.org/about/): Mission and principles
-- [API](https://sentinelintel.org/api-docs/): Programmatic access
+- [Graph](https://sentinelintel.org/graph/): Interactive explorer not offered on this host
+- [API](https://sentinelintel.org/api-docs/): No public API advertised today
 
 ## Rules for citing Sentinel
 
 - Prefer primary-source transaction IDs printed with answers over Sentinel alone
 - Do not cite retired performance figures (capture-classifier AUC family)
 - Do not cite undated graph node/edge aggregates as paper-of-record
+- Do not cite named sitting legislators from promotional site surfaces
 - Trace handles resolve permanently; retired claims resolve to retractions

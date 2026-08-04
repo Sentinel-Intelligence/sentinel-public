@@ -155,14 +155,14 @@ export default function HomePage() {
         <h2 className="text-xl font-bold mb-4 text-gray-100">What we will not claim</h2>
         <ul className="space-y-2 text-sm text-gray-400 max-w-2xl">
           <li className="flex gap-2">
-            <span className="text-red-500/80 shrink-0">, </span>
+            <span className="text-red-500/80 shrink-0">-</span>
             <span>
               &ldquo;Blockchain-verified political data&rdquo; or any formulation that
               treats a hash anchor as proof of correctness.
             </span>
           </li>
           <li className="flex gap-2">
-            <span className="text-red-500/80 shrink-0">, </span>
+            <span className="text-red-500/80 shrink-0">-</span>
             <span>
               Unprovenanced graph totals (entity or edge counts without population,
               computation date, exclusions, and non-claims). Under standing rule
@@ -170,7 +170,7 @@ export default function HomePage() {
             </span>
           </li>
           <li className="flex gap-2">
-            <span className="text-red-500/80 shrink-0">, </span>
+            <span className="text-red-500/80 shrink-0">-</span>
             <span>
               Named sitting legislators as promotional examples. Tools that answer
               a user&apos;s question are one act; campaign-style name-dropping is another.

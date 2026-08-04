@@ -41,14 +41,14 @@ const CAMP_COLORS = {
 
 const SELL_TIMELINE = [
   { quarter: "Q3 '23", value: 62.1, note: 'peak reform pressure',    style: { bar: 'bg-red-500',    label: 'text-red-400',    badge: 'bg-red-900/40 text-red-300 border-red-700' } },
-  { quarter: "Q4 '24", value: 12.4, note: 'ban dies — buying frenzy', style: { bar: 'bg-green-500',  label: 'text-green-400',  badge: 'bg-green-900/40 text-green-300 border-green-700' } },
+  { quarter: "Q4 '24", value: 12.4, note: 'ban dies, buying frenzy', style: { bar: 'bg-green-500',  label: 'text-green-400',  badge: 'bg-green-900/40 text-green-300 border-green-700' } },
   { quarter: "Q2 '25", value: 45.7, note: 'back to normal',           style: { bar: 'bg-yellow-500', label: 'text-yellow-400', badge: 'bg-yellow-900/40 text-yellow-300 border-yellow-700' } },
 ]
 
 const CHIPS_TRADES = [
-  { legislator: 'Pelosi',  action: 'BUY',  ticker: 'NVDA',       size: '$1–5M',    date: 'Jun 17', note: 'Pre-markup' },
-  { legislator: 'Pelosi',  action: 'SELL', ticker: 'NVDA',       size: '$1–5M',    date: 'Jul 26', note: '39 days later' },
-  { legislator: 'Manning', action: 'BUY',  ticker: 'Chips/SOXX', size: 'multiple', date: 'Jun–Jul', note: '8 purchases' },
+  { legislator: 'Pelosi',  action: 'BUY',  ticker: 'NVDA',       size: '$1, 5M',    date: 'Jun 17', note: 'Pre-markup' },
+  { legislator: 'Pelosi',  action: 'SELL', ticker: 'NVDA',       size: '$1, 5M',    date: 'Jul 26', note: '39 days later' },
+  { legislator: 'Manning', action: 'BUY',  ticker: 'Chips/SOXX', size: 'multiple', date: 'Jun, Jul', note: '8 purchases' },
 ]
 
 const CONFLICTS = [
@@ -94,7 +94,7 @@ export default function InvestigationsPage() {
       <h2 className="text-xl font-semibold text-cyan-300 mb-4">Sell% Timeline</h2>
       <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-8">
         <h4 className="text-gray-400 text-xs tracking-widest uppercase mb-6">
-          Congressional Sell% — Key Inflection Quarters
+          Congressional Sell%, Key Inflection Quarters
         </h4>
         <div className="flex items-end gap-8 mb-4" style={{ height: '120px' }}>
           {SELL_TIMELINE.map(({ quarter, value, style }) => (
@@ -120,9 +120,9 @@ export default function InvestigationsPage() {
       <h2 className="text-xl font-semibold text-cyan-300 mb-4">CHIPS Act Trading Window</h2>
       <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-8">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-          <h4 className="text-cyan-400 font-bold">CHIPS Act Window — 18 Semiconductor Trades</h4>
+          <h4 className="text-cyan-400 font-bold">CHIPS Act Window, 18 Semiconductor Trades</h4>
           <span className="text-xs text-gray-500 border border-gray-700 px-2 py-0.5 rounded">
-            Jun–Jul 2022 · markup period
+            Jun, Jul 2022 · markup period
           </span>
         </div>
         <p className="text-gray-400 text-sm mb-4">
@@ -171,7 +171,7 @@ export default function InvestigationsPage() {
       <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-16">
         <h4 className="text-cyan-400 font-bold mb-3">2025 Committee Conflicts</h4>
         <p className="text-gray-400 text-sm mb-4">
-          Reform pressure worked temporarily — the ban&apos;s failure emboldened continued trading
+          Reform pressure worked temporarily, the ban&apos;s failure emboldened continued trading
           with direct committee jurisdiction conflicts into 2025.
         </p>
         <div className="overflow-x-auto">
@@ -202,18 +202,18 @@ export default function InvestigationsPage() {
       <p className="text-gray-400 text-sm mb-10 max-w-2xl">
         Every node is a legislator. Size reflects their Influence Exposure Score.
         Edges appear when two members traded the same stock in the same month.
-        Pulse rings fire when trades occur — green for buys, red for sells.
+        Pulse rings fire when trades occur, green for buys, red for sells.
         Use the control bar to play, adjust speed, or reset.
       </p>
       <InfluenceMap />
       <div className="mt-6 grid sm:grid-cols-3 gap-4 text-xs text-gray-600 font-mono">
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
           <div className="text-gray-400 font-semibold mb-1">Node size</div>
-          <p>IES score — larger = more deeply embedded in influence networks</p>
+          <p>IES score, larger = more deeply embedded in influence networks</p>
         </div>
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
           <div className="text-gray-400 font-semibold mb-1">Red heat glow</div>
-          <p>IES ≥ 20 — node&apos;s sphere of influence extends well beyond direct donations</p>
+          <p>IES ≥ 20, node&apos;s sphere of influence extends well beyond direct donations</p>
         </div>
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
           <div className="text-gray-400 font-semibold mb-1">Cyan edges</div>

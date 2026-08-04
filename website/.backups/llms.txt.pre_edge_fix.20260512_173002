@@ -1,0 +1,21 @@
+# Sentinel Intelligence
+
+> The largest open graph of congressional influence ever built. Sentinel Intelligence maps
+> political finance, congressional insider trading, lobbying networks, and dark money flows
+> through a continuously updated knowledge graph sourced from 10 federal databases.
+> Nonpartisan, non-accusatory, MIT-licensed, and free to access.
+
+## Core Platform
+
+- [Home](https://sentinelintel.org/): Platform overview, entity counts, and Sentinel Oracle access
+- [Investigations](https://sentinelintel.org/investigations/): Original research including the Three Camps analysis of STOCK Act compliance, CHIPS Act trading window analysis, and ongoing committee conflict mapping
+- [Knowledge Graph](https://sentinelintel.org/graph/): Interactive visualization of 463K+ entities and 7.3M connections
+
+## Methodology & Validation
+
+- [Methodology](https://sentinelintel.org/methodology/): Five-stage ingestion pipeline, Influence Vortex Model (8 dimensions), IES v3.5 scoring (AUC 0.9575), XRPL blockchain provenance
+- [About](https://sentinelintel.org/about/): Mission, principles, MIT license, IC2S2 2026 academic submission
+
+## API & Data Access
+
+- [API Documentation](https://sentinelintel.org/api-docs/): REST API. Free: 100 req/day. Reporter: $49/mo. Newsroom: $299/mo. Institution: $999/mo. POST /oracle for natural language queries. Base: https://api.sentinelintel.org

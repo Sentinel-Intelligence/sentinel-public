@@ -332,7 +332,7 @@ export default function WeatherMapClient() {
             </div>
             <h3 className="text-xl font-bold text-gray-100">Influence Weather Map</h3>
             <p className="text-xs text-gray-500 mt-0.5">
-              Congressional stock trades 2024–2026 · scrub timeline · hover nodes to inspect
+              Congressional stock trades 2024, 2026 · scrub timeline · hover nodes to inspect
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -457,7 +457,7 @@ export default function WeatherMapClient() {
                 (hovNode.ies || 0) >= 20 ? 'text-orange-400' :
                 (hovNode.ies || 0) >= 10 ? 'text-yellow-400' : 'text-green-400'
               }`}>
-                IES {hovNode.ies?.toFixed(1) ?? '—'}
+                IES {hovNode.ies?.toFixed(1) ?? ', '}
               </span>
             </div>
             {hovTrades.length > 0 && (
@@ -489,7 +489,7 @@ export default function WeatherMapClient() {
           max={Math.max(0, months.length - 1)}
           value={monthIdx}
           onChange={e => { setPlaying(false); setMonthIdx(Number(e.target.value)) }}
-          aria-label={`Timeline month scrubber — ${months[monthIdx] || ''}`}
+          aria-label={`Timeline month scrubber, ${months[monthIdx] || ''}`}
           className="w-full cursor-pointer"
           style={{ accentColor: '#22d3ee' }}
         />

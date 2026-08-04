@@ -22,13 +22,13 @@ const DIMENSIONS = [
 ]
 
 const DATA_SOURCES = [
-  { name: 'House PTR Disclosures', desc: 'Periodic Transaction Reports — all stock trades by House members and staff' },
+  { name: 'House PTR Disclosures', desc: 'Periodic Transaction Reports, all stock trades by House members and staff' },
   { name: 'Senate eFD',            desc: 'Electronic Financial Disclosures for all sitting senators' },
-  { name: 'FEC Records',           desc: 'Federal Election Commission bulk data — all campaign contributions and expenditures' },
+  { name: 'FEC Records',           desc: 'Federal Election Commission bulk data, all campaign contributions and expenditures' },
   { name: 'Congressional Records', desc: 'Official legislative history, committee assignments, and floor votes' },
-  { name: 'Lobbying Databases',    desc: 'LDA filings — all registered lobbyist activity and client relationships' },
-  { name: 'FARA Filings',          desc: 'Foreign Agent Registration Act — foreign influence disclosures' },
-  { name: 'Court Documents',       desc: 'PACER — federal case filings, indictments, and judgments' },
+  { name: 'Lobbying Databases',    desc: 'LDA filings, all registered lobbyist activity and client relationships' },
+  { name: 'FARA Filings',          desc: 'Foreign Agent Registration Act, foreign influence disclosures' },
+  { name: 'Court Documents',       desc: 'PACER, federal case filings, indictments, and judgments' },
   { name: 'DOJ Releases',          desc: 'Department of Justice press releases and enforcement actions' },
   { name: 'IRS 990s',              desc: '501(c) nonprofit and dark money group filings' },
   { name: 'USAID Records',         desc: 'Foreign assistance disbursement records and contractor data' },
@@ -73,7 +73,7 @@ export default function MethodologyPage() {
 
       {/* Data sources */}
       <div className="mb-12">
-        <h2 className="text-cyan-300 font-semibold mb-4">Data Sources — 10 Federal Databases</h2>
+        <h2 className="text-cyan-300 font-semibold mb-4">Data Sources, 10 Federal Databases</h2>
         <div className="flex flex-wrap mb-6">
           {DATA_SOURCES.map(s => (
             <span key={s.name} className="inline-block bg-gray-800 text-cyan-400 text-xs px-3 py-1 rounded-full border border-gray-700 m-1">

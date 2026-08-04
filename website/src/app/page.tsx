@@ -4,7 +4,7 @@ import Link from 'next/link'
 import NetworkCanvas from '@/components/home/NetworkCanvas'
 
 /**
- * Main page — messaging-session standards (D-2026-08-06-GB-MAIN-PAGE-REBUILD).
+ * Main page, messaging-session standards (D-2026-08-06-GB-MAIN-PAGE-REBUILD).
  * Position: check-us, not look-what-we-built.
  * Claim: three defensible clauses + structural fourth sentence (H-31).
  * No unprovenanced aggregates. Retraction stated with what replaced it.
@@ -57,7 +57,7 @@ export default function HomePage() {
           >
             Sentinel is a public map of U.S. political finance built from federal
             filings. Journalists and staffers need a source that survives a second
-            look — not a scoreboard of unverifiable totals.
+            look, not a scoreboard of unverifiable totals.
           </p>
           <div className="hero-animate flex flex-wrap gap-3" style={{ animationDelay: '300ms' }}>
             <Link
@@ -76,7 +76,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Defensible claim — four sentences travel together (H-31) */}
+      {/* Defensible claim, four sentences travel together (H-31) */}
       <div className="border border-cyan-900/60 bg-gray-900/80 rounded-xl p-8 mb-12">
         <div className="text-cyan-500 text-xs tracking-widest uppercase mb-4">
           The claim we will stand behind
@@ -131,14 +131,14 @@ export default function HomePage() {
         <div className="space-y-4 text-gray-400 text-sm leading-relaxed max-w-2xl">
           <p>
             <span className="text-gray-200">What it was.</span> We published a
-            capture-classifier performance figure — an AUC-ROC near 0.96 —
+            capture-classifier performance figure, an AUC-ROC near 0.96 , 
             as if it measured held-out detection of influence.
           </p>
           <p>
             <span className="text-gray-200">Why it was circular.</span> The
             positive label was two input features combined with a logical AND.
-            The model was recovering a definition it had been handed — grading
-            its own homework — not measuring capture on unseen ground truth.
+            The model was recovering a definition it had been handed, grading
+            its own homework, not measuring capture on unseen ground truth.
           </p>
           <p>
             <span className="text-gray-200">What replaced it.</span> That
@@ -155,14 +155,14 @@ export default function HomePage() {
         <h2 className="text-xl font-bold mb-4 text-gray-100">What we will not claim</h2>
         <ul className="space-y-2 text-sm text-gray-400 max-w-2xl">
           <li className="flex gap-2">
-            <span className="text-red-500/80 shrink-0">—</span>
+            <span className="text-red-500/80 shrink-0">, </span>
             <span>
               &ldquo;Blockchain-verified political data&rdquo; or any formulation that
               treats a hash anchor as proof of correctness.
             </span>
           </li>
           <li className="flex gap-2">
-            <span className="text-red-500/80 shrink-0">—</span>
+            <span className="text-red-500/80 shrink-0">, </span>
             <span>
               Unprovenanced graph totals (entity or edge counts without population,
               computation date, exclusions, and non-claims). Under standing rule
@@ -170,7 +170,7 @@ export default function HomePage() {
             </span>
           </li>
           <li className="flex gap-2">
-            <span className="text-red-500/80 shrink-0">—</span>
+            <span className="text-red-500/80 shrink-0">, </span>
             <span>
               Named sitting legislators as promotional examples. Tools that answer
               a user&apos;s question are one act; campaign-style name-dropping is another.
@@ -179,7 +179,7 @@ export default function HomePage() {
         </ul>
       </div>
 
-      {/* Context: shuttered tools — keep factual, no scale boast */}
+      {/* Context: shuttered tools, keep factual, no scale boast */}
       <div className="border-t border-gray-800 pt-14 pb-16">
         <div className="mb-8 max-w-xl">
           <h2 className="text-2xl font-bold mb-3">
@@ -187,7 +187,7 @@ export default function HomePage() {
           </h2>
           <p className="text-gray-400 text-sm leading-relaxed">
             Risk-averse readers need a source that remains checkable when others
-            disappear — not a larger unverifiable map.
+            disappear, not a larger unverifiable map.
           </p>
         </div>
         <div className="max-w-2xl space-y-3 mb-8">
@@ -199,7 +199,7 @@ export default function HomePage() {
               <span className="text-red-500 font-bold text-sm shrink-0">✕</span>
               <div className="flex-1 min-w-0">
                 <span className="font-medium text-sm text-gray-200">{item.name}</span>
-                <span className="text-gray-500 text-xs ml-2">— {item.note}</span>
+                <span className="text-gray-500 text-xs ml-2">,  {item.note}</span>
               </div>
               <span className="font-mono text-xs text-gray-500 shrink-0">{item.year}</span>
             </div>

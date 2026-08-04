@@ -26,14 +26,14 @@ export default function AboutPage() {
       <p className="text-gray-400 mb-10 max-w-2xl">
         Methodology and tools publicly available. Core graph construction is being prepared
         for full open-source release. If you&apos;re a researcher, journalist, or
-        developer — this is for you.
+        developer, this is for you.
       </p>
 
       {/* Research */}
       <div className="grid md:grid-cols-2 gap-6 mb-12">
         <div className="bg-gray-900 border border-cyan-800 rounded-lg p-6">
           <div className="mb-3"><FileText size={22} className="text-cyan-400" /></div>
-          <div className="font-bold text-cyan-300 mb-1">IC2S2 2026 — Accepted</div>
+          <div className="font-bold text-cyan-300 mb-1">IC2S2 2026, Accepted</div>
           <p className="text-gray-500 text-xs italic mb-2">
             &ldquo;Mapping Institutional Capture: A Graph-Based Framework for Detecting Political Influence Networks in U.S. Congressional Financial Disclosures&rdquo;
           </p>

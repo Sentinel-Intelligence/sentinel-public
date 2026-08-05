@@ -94,6 +94,19 @@ export default function HomePage() {
           not been altered since. They do not prove the underlying federal filing
           is accurate. That limit is part of the claim, not a footnote.
         </p>
+        <div className="mt-6 pt-6 border-t border-gray-800 max-w-2xl">
+          <p className="text-gray-300 text-sm leading-relaxed mb-3">
+            Coverage dates vary by source. The graph is built from federal filings
+            on an ingestion schedule, not in real time, and some series are months
+            behind their sources. We publish what we ingested and when.
+          </p>
+          <Link
+            href="/methodology#coverage-dates"
+            className="text-cyan-500 text-sm hover:text-cyan-400 transition-colors"
+          >
+            Per-source coverage table →
+          </Link>
+        </div>
       </div>
 
       {/* What you can check */}

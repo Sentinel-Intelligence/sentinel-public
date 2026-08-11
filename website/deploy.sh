@@ -22,6 +22,7 @@ server {
     server_name localhost;
     root /var/www/sentinel;
     index index.html;
+    include snippets/sentinel-api-proxy.conf;
 
     # Next.js static assets — content-hashed filenames, cache forever
     location /_next/static/ {

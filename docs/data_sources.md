@@ -23,4 +23,4 @@ Entities are linked across databases using Bioguide IDs, CIK numbers, FEC IDs, a
 
 ## IRONCLAD Provenance
 
-Every edge carries: source database, source record ID, ingestion timestamp, and batch ID. XRPL blockchain anchoring provides immutable verification.
+Edges carry source database, source record identifier, ingestion timestamp, and batch identifier where the source supplied them. Coverage varies by source and is not universal. Graph state is anchored to the XRP Ledger at intervals; see the README for the current anchor count.

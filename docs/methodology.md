@@ -31,4 +31,4 @@ Raw scores are min-max normalized within each dimension, then weighted and summe
 
 ## IRONCLAD Standard
 
-Every IES score carries provenance metadata: source databases, ingestion timestamps, batch IDs, and XRPL anchoring for immutable verification.
+IES scores carry provenance metadata recording source databases, ingestion timestamps, and batch identifiers. Scores are not individually anchored to the XRP Ledger; anchoring records graph state at intervals.

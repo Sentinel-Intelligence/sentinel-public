@@ -16,7 +16,7 @@ Sentinel is a Neo4j knowledge graph that fuses 15+ public federal databases to m
 
 The system scores all 1,228 current and recent legislators with the **Influence Exposure Score (IES v3.5)**.
 
-Graph state is anchored to the XRP Ledger at intervals. As of 2026-08-13 the provenance wallet rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV carries 311 graph-state anchors, the earliest dated 2026-02-09 and the most recent 2026-07-27. An anchor records a hash of graph state at a point in time. It is not a per-node or per-edge certificate.
+Graph state is anchored to the XRP Ledger at intervals. As of 2026-08-13 the provenance wallet rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV carries 311 graph-state anchors, the earliest dated 2026-02-09 and the most recent 2026-07-27. An anchor records a hash of graph state at a point in time. It is not a per-node or per-edge certificate. See [docs/verification.md](docs/verification.md) for the public verification procedure.
 
 ## Data Sources
 
@@ -45,6 +45,7 @@ docs/
   methodology.md    — IES v3.5 full specification and validation
   schema.md         — Graph schema: 67 node labels, 104 relationship types
   data_sources.md   — All federal data sources with URLs and update frequencies
+  verification.md   — Public XRPL provenance verification procedure
 scripts/
   cypher_examples.py — 10 example Cypher queries with documentation
   xrpl_anchor.py     — SHIELD provenance anchoring to XRPL mainnet

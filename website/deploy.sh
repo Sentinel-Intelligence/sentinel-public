@@ -24,15 +24,21 @@ server {
     index index.html;
     include snippets/sentinel-api-proxy.conf;
 
-    # Next.js static assets — content-hashed filenames, cache forever
+    # A path that does not exist returns 404, not the homepage.
+    # The previous SPA-style fallback to /index.html made every missing
+    # page answer 200 with the homepage body, which is how a missing
+    # /verify went undetected from outside for five days.
+    error_page 404 /404.html;
+
+    # Next.js static assets, content-hashed filenames, cache forever
     location /_next/static/ {
         expires 1y;
         add_header Cache-Control "public, immutable";
     }
 
-    # HTML, API routes — always revalidate
+    # HTML, API routes, always revalidate
     location / {
-        try_files $uri $uri/ /index.html;
+        try_files $uri $uri/ =404;
         add_header Cache-Control "no-cache, no-store, must-revalidate";
         add_header Pragma "no-cache";
         add_header Expires "0";
@@ -68,6 +74,9 @@ server {
 }
 NGINX_EOF
 
+echo "[deploy] Testing nginx config..."
+sudo nginx -t
+
 echo "[deploy] Reloading nginx..."
 sudo nginx -s reload
 
@@ -77,7 +86,55 @@ sudo systemctl restart cloudflared
 echo "[deploy] Waiting 10s for cloudflared to reconnect..."
 sleep 10
 
-echo "[deploy] Verifying localhost..."
-curl -sf http://localhost:8080/ | grep -o '33M\|33003274\|463K' | head -5
+echo "[deploy] Verifying this deploy..."
+DEPLOY_FAIL=0
 
-echo "[deploy] Done. Check sentinelintel.org in fresh incognito."
+status_of() {
+    curl -s -o /dev/null -w '%{http_code}' "$1" || echo "000"
+}
+
+expect_status() {
+    local label="$1" url="$2" want="$3" got
+    got="$(status_of "$url")"
+    if [ "$got" = "$want" ]; then
+        echo "[deploy]   OK   $label status $got"
+    else
+        echo "[deploy]   FAIL $label status $got, expected $want"
+        DEPLOY_FAIL=1
+    fi
+}
+
+expect_status "homepage" "http://localhost:8080/" "200"
+expect_status "verify page" "http://localhost:8080/verify/" "200"
+expect_status "verify page, no trailing slash" "http://localhost:8080/verify" "200"
+expect_status "nonexistent path" "http://localhost:8080/deploy-probe-path-that-does-not-exist" "404"
+
+VERIFY_BODY="$(curl -s http://localhost:8080/verify/ || true)"
+if printf '%s' "$VERIFY_BODY" | grep -q 'receipt-ed25519-3a89049da148a9d4'; then
+    echo "[deploy]   OK   verify page carries the announced key identifier"
+else
+    echo "[deploy]   FAIL verify page body does not carry the key identifier, likely serving the wrong document"
+    DEPLOY_FAIL=1
+fi
+
+if printf '%s' "$VERIFY_BODY" | grep -q 'rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV'; then
+    echo "[deploy]   OK   verify page carries the ledger wallet"
+else
+    echo "[deploy]   FAIL verify page body does not carry the ledger wallet"
+    DEPLOY_FAIL=1
+fi
+
+HTML_TOTAL="$(find "$WEBROOT" -type f -name '*.html' | wc -l)"
+LLC_HITS="$(grep -rl 'Sentinel Intelligence LLC' "$WEBROOT" --include='*.html' 2>/dev/null | wc -l)"
+echo "[deploy]   superseded LLC form present in $LLC_HITS of $HTML_TOTAL deployed html files"
+if [ "$LLC_HITS" -ne 0 ]; then
+    echo "[deploy]   FAIL superseded LLC form still deployed"
+    DEPLOY_FAIL=1
+fi
+
+if [ "$DEPLOY_FAIL" -ne 0 ]; then
+    echo "[deploy] DEPLOY VERIFICATION FAILED"
+    exit 1
+fi
+
+echo "[deploy] All deploy checks passed. Check sentinelintel.org in fresh incognito."

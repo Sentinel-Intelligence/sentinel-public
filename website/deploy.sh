@@ -93,6 +93,21 @@ status_of() {
     curl -s -o /dev/null -w '%{http_code}' "$1" || echo "000"
 }
 
+status_of_followed() {
+    curl -sL -o /dev/null -w '%{http_code}' "$1" || echo "000"
+}
+
+expect_status_followed() {
+    local label="$1" url="$2" want="$3" got
+    got="$(status_of_followed "$url")"
+    if [ "$got" = "$want" ]; then
+        echo "[deploy]   OK   $label status $got"
+    else
+        echo "[deploy]   FAIL $label status $got, expected $want"
+        DEPLOY_FAIL=1
+    fi
+}
+
 expect_status() {
     local label="$1" url="$2" want="$3" got
     got="$(status_of "$url")"
@@ -106,7 +121,8 @@ expect_status() {
 
 expect_status "homepage" "http://localhost:8080/" "200"
 expect_status "verify page" "http://localhost:8080/verify/" "200"
-expect_status "verify page, no trailing slash" "http://localhost:8080/verify" "200"
+expect_status "verify page, no trailing slash redirects" "http://localhost:8080/verify" "301"
+expect_status_followed "verify page after following redirect" "http://localhost:8080/verify" "200"
 expect_status "nonexistent path" "http://localhost:8080/deploy-probe-path-that-does-not-exist" "404"
 
 VERIFY_BODY="$(curl -s http://localhost:8080/verify/ || true)"
@@ -125,7 +141,7 @@ else
 fi
 
 HTML_TOTAL="$(find "$WEBROOT" -type f -name '*.html' | wc -l)"
-LLC_HITS="$(grep -rl 'Sentinel Intelligence LLC' "$WEBROOT" --include='*.html' 2>/dev/null | wc -l)"
+LLC_HITS="$({ grep -rl 'Sentinel Intelligence LLC' "$WEBROOT" --include='*.html' 2>/dev/null || true; } | wc -l)"
 echo "[deploy]   superseded LLC form present in $LLC_HITS of $HTML_TOTAL deployed html files"
 if [ "$LLC_HITS" -ne 0 ]; then
     echo "[deploy]   FAIL superseded LLC form still deployed"

@@ -53,7 +53,7 @@ scripts/
 
 ## Citation
 
-> Sentinel Intelligence. (2026). Mapping Institutional Capture: A Graph-Based Framework for Detecting Political Influence Networks in U.S. Congressional Financial Disclosures. Submitted to IC2S2 2026.
+> Brown, B., and Ellefritz, R. (2026). Structural Influence Detection in U.S. Federal Politics: A Multi-Source Knowledge Graph Approach. Accepted, Poster 429, IC2S2 2026.
 
 ## Links
 
@@ -64,8 +64,8 @@ scripts/
 ---
 
 *Built with public federal data. 100% IRONCLAD provenance.*
-*Patent Pending — USPTO SENTINEL-STYX-PROV-001 (encrypted agent communication protocol)*
-*© 2026 Sentinel Intelligence LLC. MIT License.*
+*Patent pending.*
+*© 2026 Sentinel Intelligence, a project of ArgusForge LLC. MIT License.*
 
 ## Verified Graph Statistics (March 10, 2026)
 
@@ -82,7 +82,7 @@ scripts/
 
 ## Current Status
 
-Sentinel is in active development. The full ingestion pipeline and Neo4j load procedures will be published following completion of the peer review process for our IC2S2 2026 submission.
+Sentinel is in active development. The full ingestion pipeline and Neo4j load procedures will be published as they stabilize.
 
 **What's here now:**
 - Full graph schema documentation (67 labels, 104 relationship types)
@@ -91,11 +91,11 @@ Sentinel is in active development. The full ingestion pipeline and Neo4j load pr
 - XRPL provenance anchoring script
 - All 15+ federal data source specifications
 
-Additional tooling will be published following completion of the IC2S2 2026 peer review process.
+Additional tooling will be published as it is ready for release.
 
 ## Academic & Government Submissions
 
-- **IC2S2 2026** — Submitted March 2026, 12th International Conference on Computational Social Science
+- **IC2S2 2026** - Accepted, Poster 429, Structural Influence Detection in U.S. Federal Politics: A Multi-Source Knowledge Graph Approach (Brown and Ellefritz)
 - **NIST CAISI RFI** — AI Agent Security response, Docket NIST-2025-0035 (March 2026)
 - **NCCoE Agent Identity** — Software and AI Agent Identity concept paper (April 2026)
 

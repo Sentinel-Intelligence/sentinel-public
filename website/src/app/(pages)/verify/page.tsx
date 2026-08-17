@@ -316,9 +316,19 @@ export default function VerifyPage() {
           The verifier and a sample receipt are published in the public repository.
           From the root of a cloned copy, run:
         </p>
-        <pre className="bg-gray-900 border border-gray-700 rounded p-4 text-xs text-cyan-200 font-mono overflow-x-auto mb-5 whitespace-pre-wrap break-all">
+        <pre className="bg-gray-900 border border-gray-700 rounded p-4 text-xs text-cyan-200 font-mono overflow-x-auto mb-3 whitespace-pre-wrap break-all">
           {`python3 scripts/sentinel_canon_v1_verify.py verify docs/evidence/oc7_issuance_run_2026-08-16/answer_receipt.json`}
         </pre>
+        <p className="text-gray-400 text-sm leading-relaxed mb-5">
+          The three files the command uses are in the public repository at{' '}
+          <code className="text-cyan-400 text-xs break-all">https://github.com/Sentinel-Intelligence/sentinel-public</code>.
+          Raw download URLs:{' '}
+          <code className="text-cyan-400 text-xs break-all">https://raw.githubusercontent.com/Sentinel-Intelligence/sentinel-public/main/scripts/sentinel_canon_v1_verify.py</code>,{' '}
+          <code className="text-cyan-400 text-xs break-all">https://raw.githubusercontent.com/Sentinel-Intelligence/sentinel-public/main/docs/evidence/oc7_issuance_run_2026-08-16/answer_receipt.json</code>,{' '}
+          <code className="text-cyan-400 text-xs break-all">https://raw.githubusercontent.com/Sentinel-Intelligence/sentinel-public/main/docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json</code>.
+          When running from a flat download rather than a clone, pass{' '}
+          <code className="text-cyan-400 text-xs">--public-key</code> pointing at the downloaded key record.
+        </p>
         <p className="text-gray-300 text-sm leading-relaxed mb-2">
           <strong className="text-gray-100">Success looks like this (exit code 0).</strong>{' '}
           Output below is from a run at sentinel-public HEAD, 2026-08-16. The{' '}
@@ -361,11 +371,65 @@ export default function VerifyPage() {
   "stored_receipt_id": "receipt-9b6a48042debea82"
 }`}
         </pre>
-        <p className="text-gray-400 text-sm leading-relaxed">
-          The verifier is a convenience; the canonicalization rules it applies are the
-          authority, consistent with how this page frames the measurement script in the
-          section above.
+        <p className="text-gray-300 text-sm leading-relaxed mb-2">
+          <strong className="text-gray-100">A receipt whose signature bytes do not match exits 1 with a different reason.</strong>{' '}
+          Output below is from a run on a copy of the same receipt where the payload was not
+          changed (so <code className="text-cyan-400 text-xs">receipt_id</code> still
+          recomputes correctly) but the last hex nibble of the signature was flipped. At
+          sentinel-public HEAD, 2026-08-16. Transcript:{' '}
+          <code className="text-cyan-400 text-xs">docs/evidence/verify_page_candor_2026-08-16/t7_fe_sig_invalid_transcript.txt</code>{' '}
+          in this repository.
         </p>
+        <pre className="bg-gray-900 border border-gray-700 rounded p-4 text-xs text-cyan-200 font-mono overflow-x-auto mb-5 whitespace-pre-wrap break-all">
+          {`{
+  "canonicalization_version": "sentinel-canon-v1",
+  "cryptography_version": "46.0.7",
+  "ok": false,
+  "public_key_record": "/home/toasty/projects/sentinel-public/docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json",
+  "reason": "Ed25519 signature invalid under announced public key",
+  "recomputed_receipt_id": "receipt-9b6a48042debea82",
+  "signing_canonical_len": 2032,
+  "signing_canonical_sha256": "cb6a764190dc5efbf0f5fb35ddfda08e4f8146f7bf485108f6d5000d4922ecb4",
+  "signing_key_id_announced": "receipt-ed25519-3a89049da148a9d4",
+  "signing_key_id_receipt": "receipt-ed25519-3a89049da148a9d4",
+  "stored_receipt_id": "receipt-9b6a48042debea82"
+}`}
+        </pre>
+        <p className="text-gray-400 text-sm leading-relaxed mb-5">
+          Any output other than the examples shown above is a failure for the purpose of
+          this check; treat the receipt as not verified.
+        </p>
+        <p className="text-gray-400 text-sm leading-relaxed mb-4">
+          The verifier, the public key record, and the sample receipt shown here are all
+          operator-published; a reader who reimplements the canonicalization rules
+          independently and checks the announced key directly does not rely on any of them,
+          and if that reimplementation disagrees with this tool, the disagreement is the
+          finding.
+        </p>
+        <p className="text-gray-300 text-sm leading-relaxed mb-3">
+          The canonicalization rules the verifier applies are the authority. A reader who
+          implements them independently does not need the tool to perform the check.
+        </p>
+        <div className="bg-gray-900 border border-gray-700 rounded-lg p-5 mb-2">
+          <div className="text-gray-400 text-xs uppercase tracking-wider mb-3">
+            sentinel-canon-v1 canonicalization rules
+          </div>
+          <ul className="text-gray-300 text-xs font-mono space-y-1 list-none pl-0">
+            <li>encoding: UTF-8</li>
+            <li>key order: Unicode code point, ascending</li>
+            <li>separators: comma and colon, no insignificant whitespace</li>
+            <li>null: preserved, distinct from key absence</li>
+            <li>numbers: integers only; no float, no exponent, no leading zeros, no sign on zero; float inputs refused</li>
+          </ul>
+          <div className="text-gray-400 text-xs uppercase tracking-wider mt-4 mb-3">
+            derived fields
+          </div>
+          <ul className="text-gray-300 text-xs font-mono space-y-1 list-none pl-0">
+            <li>receipt_id: &quot;receipt-&quot; + first 16 lowercase hex of SHA-256 over canonical payload with receipt_id and signature excluded</li>
+            <li>signing bytes: canonical payload with signature excluded (receipt_id included)</li>
+            <li>signature: Ed25519 over the signing bytes</li>
+          </ul>
+        </div>
       </div>
 
       {/* 1.7 Check a receipt's contents */}
@@ -445,13 +509,19 @@ export default function VerifyPage() {
             announced publicly, on a ledger, before you asked: the signature check above
             confirms this.
           </p>
+        </div>
+
+        <h3 className="text-cyan-400 font-semibold mt-6 mb-3">
+          What the signature authenticates but does not prove
+        </h3>
+        <div className="space-y-4">
           <p className="text-gray-300 text-sm leading-relaxed">
+            A reader who verifies the signature establishes that we committed to these
+            claims under the announced key; it does not establish that they occurred.{' '}
             <strong className="text-gray-100">
               The receipt also carries two operator assertions under that signature.
             </strong>{' '}
-            A reader who verifies the signature establishes that we committed to these
-            claims under the announced key; it does not establish that they occurred. That
-            a specific query, from a library of queries a person reviewed and certified
+            That a specific query, from a library of queries a person reviewed and certified
             beforehand, was run at a recorded time. And that the query ran against a
             recorded snapshot of the data structure.
           </p>

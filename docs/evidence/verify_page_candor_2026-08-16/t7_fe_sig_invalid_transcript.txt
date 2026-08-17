@@ -1,0 +1,52 @@
+T-7 TRANSCRIPT: F-E failure example (Ed25519 signature invalid)
+Dispatch: D-2026-08-16-CC-VERIFY-PAGE-CANDOR
+Date: 2026-08-16
+
+Purpose: demonstrate a failure mode distinct from the existing receipt_id mismatch example.
+In this case the payload is unaltered (receipt_id recomputes correctly) but the last hex
+nibble of the signature is flipped, so the Ed25519 verification fails.
+
+Mutation applied:
+  Original receipt: docs/evidence/oc7_issuance_run_2026-08-16/answer_receipt.json
+  Mutation: signature[-1] changed from '1' to 'e'
+  Method: Python one-liner flipping the final nibble (see below)
+  Result written to: /tmp/answer_receipt_sig_mutated.json (ephemeral; not committed)
+
+Mutation script:
+  python3 - <<'EOF'
+  import json, copy
+  with open("docs/evidence/oc7_issuance_run_2026-08-16/answer_receipt.json") as f:
+      r = json.load(f)
+  mutated = copy.deepcopy(r)
+  sig = mutated["signature"]
+  flipped = {'0':'f','1':'e','2':'d','3':'c','4':'b','5':'a','6':'9','7':'8',
+             '8':'7','9':'6','a':'5','b':'4','c':'3','d':'2','e':'1','f':'0'}
+  mutated["signature"] = sig[:-1] + flipped[sig[-1]]
+  with open("/tmp/answer_receipt_sig_mutated.json", "w") as f:
+      json.dump(mutated, f, ensure_ascii=False, sort_keys=False)
+  EOF
+
+Command:
+  cd /home/toasty/projects/sentinel-public
+  python3 scripts/sentinel_canon_v1_verify.py verify /tmp/answer_receipt_sig_mutated.json
+
+Output (exit 1):
+{
+  "canonicalization_version": "sentinel-canon-v1",
+  "cryptography_version": "46.0.7",
+  "ok": false,
+  "public_key_record": "/home/toasty/projects/sentinel-public/docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json",
+  "reason": "Ed25519 signature invalid under announced public key",
+  "recomputed_receipt_id": "receipt-9b6a48042debea82",
+  "signing_canonical_len": 2032,
+  "signing_canonical_sha256": "cb6a764190dc5efbf0f5fb35ddfda08e4f8146f7bf485108f6d5000d4922ecb4",
+  "signing_key_id_announced": "receipt-ed25519-3a89049da148a9d4",
+  "signing_key_id_receipt": "receipt-ed25519-3a89049da148a9d4",
+  "stored_receipt_id": "receipt-9b6a48042debea82"
+}
+
+Notes:
+- recomputed_receipt_id matches stored_receipt_id (payload is intact; receipt_id check passes).
+- The failure is the Ed25519 step: the signature bytes do not verify under the announced key.
+- This distinguishes from the receipt_id mismatch example: there, the payload was altered;
+  here, the payload is intact but the signature is wrong.

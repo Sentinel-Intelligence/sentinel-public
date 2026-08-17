@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "purpose": "Extended sentinel-canon-v1 test vector for public reference verifier",
+    "dispatch": "D-2026-08-16-GB-CANON-VERIFIER",
+    "canonicalization_version": "sentinel-canon-v1",
+    "extends": "docs/evidence/oc7_issuance_run_2026-08-16/canon_test_vector_sentinel-canon-v1.json",
+    "dependency": {
+      "name": "cryptography",
+      "version_at_build": "46.0.7"
+    }
+  },
+  "coverage_map": {
+    "UTF-8 encoding": {
+      "status": "COVERED",
+      "cases": [
+        "R1_utf8_non_ascii"
+      ],
+      "exerciser": "entity_resolution_note contains U+00C9"
+    },
+    "keys sorted by Unicode code point": {
+      "status": "COVERED",
+      "cases": [
+        "R2_codepoint_key_order"
+      ],
+      "exerciser": "Za_sort_test key name"
+    },
+    "separators comma/colon, no insignificant whitespace": {
+      "status": "COVERED",
+      "cases": [
+        "R3_insignificant_whitespace"
+      ],
+      "exerciser": "implicit via json.dumps separators; extended makes re-parse case explicit"
+    },
+    "null as JSON null, distinct from absence": {
+      "status": "COVERED",
+      "cases": [
+        "R4a_explicit_null",
+        "R4b_key_absent"
+      ],
+      "exerciser": "null_field_test; extended adds absent sibling with different hash"
+    },
+    "integers only (no float/exponent/leading zeros/sign on zero)": {
+      "status": "COVERED",
+      "cases": [
+        "R5_integer_fields",
+        "R5b_float_refused"
+      ],
+      "exerciser": "coverage_* and result_row_count; extended adds float refuse"
+    },
+    "receipt_id derivation (exclude receipt_id+signature)": {
+      "status": "COVERED",
+      "cases": [
+        "exerciser_vector_receipt_id"
+      ],
+      "exerciser": "canon_test_vector expected.receipt_id_derivation_sha256"
+    },
+    "signing bytes (exclude signature only)": {
+      "status": "COVERED",
+      "cases": [
+        "exerciser_vector_signing",
+        "oc7_answer",
+        "oc7_refusal"
+      ],
+      "exerciser": "canonical_bytes_for_signing_hex_sha256; OC-7 banked hex/sha files"
+    }
+  },
+  "cases": [
+    {
+      "id": "R1_utf8_non_ascii",
+      "rule": "UTF-8 encoding; non-ASCII string preserved",
+      "source": "extended (also covered by exerciser entity_resolution_note U+00C9)",
+      "object": {
+        "label": "Législateur",
+        "n": 1
+      },
+      "expected_sha256": "d87d4b5ddd5b445746f43aabad86f091952c175eb195e3f180424edad3bc5df5"
+    },
+    {
+      "id": "R2_codepoint_key_order",
+      "rule": "object keys sorted by Unicode code point (Z=90 before a=97)",
+      "source": "extended (also covered by exerciser Za_sort_test key)",
+      "object": {
+        "a": 1,
+        "Z": 2,
+        "m": 3
+      },
+      "expected_sha256": "35502fc60aa8567b731dcbb95baefe7ec9de05c624edd9037cebfba3689488cf",
+      "note": "canonical key order must be Z,a,m not a,m,Z"
+    },
+    {
+      "id": "R3_insignificant_whitespace",
+      "rule": "no insignificant whitespace in output (pretty input re-canonicalizes)",
+      "source": "extended (new; exerciser relies on separators only)",
+      "object": {
+        "b": 1,
+        "a": 2
+      },
+      "pretty_input": "{\n  \"b\": 1,\n  \"a\": 2\n}",
+      "expected_sha256": "d3626ac30a87e6f7a6428233b3c68299976865fa5508e4267c5415c76af7a772"
+    },
+    {
+      "id": "R4a_explicit_null",
+      "rule": "null as JSON null, distinct from absence",
+      "source": "extended (exerciser null_field_test covers null; pair completes)",
+      "object": {
+        "k": null,
+        "x": 1
+      },
+      "expected_sha256": "dbf3e334f2a873b28ad5fff2f2ea496f794a47116ba323ac4fc81300afbd8f6c"
+    },
+    {
+      "id": "R4b_key_absent",
+      "rule": "null as JSON null, distinct from absence",
+      "source": "extended (new absent sibling)",
+      "object": {
+        "x": 1
+      },
+      "expected_sha256": "5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22"
+    },
+    {
+      "id": "R5_integer_fields",
+      "rule": "numbers as JSON integers only (no float/exponent form)",
+      "source": "extended (exerciser coverage_numerator/denominator/result_row_count)",
+      "object": {
+        "coverage_numerator": 847,
+        "coverage_denominator": 1265,
+        "result_row_count": 20
+      },
+      "expected_sha256": "54ba2cc0c624f77ce96bb83b191d108439ce0fa63ca4435c39defd0d9df1065c"
+    },
+    {
+      "id": "R5b_float_refused",
+      "rule": "float refuses (never rounded)",
+      "source": "extended (new expect_refuse)",
+      "object": {
+        "bad": 1.5
+      },
+      "expect_refuse": true
+    }
+  ],
+  "exerciser_expected": {
+    "canonical_bytes_for_signing_hex_sha256": "a42ad1767eb04aea193b42993c0cb7d6b0251db047f0fc620a0be73bf2fc1e60",
+    "receipt_id_derivation_sha256": "d34cb6126ca662776116f8b32bd55f551a898e288f329f70c11ca21f49ef3ed2",
+    "note": "canonical_bytes_for_signing is the sentinel-canon-v1 serialization of test_object with the signature field removed. Its sha256 must equal canonical_bytes_for_signing_hex_sha256. The signature field value is the Ed25519 signature of those bytes under the test_key."
+  }
+}

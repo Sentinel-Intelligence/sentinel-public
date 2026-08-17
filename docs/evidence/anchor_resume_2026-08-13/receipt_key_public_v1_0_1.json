@@ -1,0 +1,21 @@
+{
+  "dispatch": "D-2026-08-13-ANCHOR-RESUME-IMPL",
+  "purpose": "receipt_signing_key_announcement",
+  "algorithm": "Ed25519",
+  "key_id": "receipt-ed25519-3a89049da148a9d4",
+  "public_key_hex": "944a0bff9fa8cd3f6acd2d657a3f3adb1456d79b03f000405e0d4340d9afbe29",
+  "public_key_base64": "lEoL/5+ozT9qzS1lej862xRW15sD8ABAXg1DQNmvvik=",
+  "public_key_bytes": 32,
+  "validity_start": "2026-08-13T22:26:28Z",
+  "validity_end": null,
+  "status": "announced",
+  "announcement_transaction_hash": "C1E819016EEFF86C723BFF0E5FD0F05A2204EAC1A120EE2715E40DE667A3072B",
+  "ledger": 106275292,
+  "xrpl_wallet_identity": "rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV",
+  "note": "Dedicated receipt-signing key. NOT the XRPL wallet key. Private half is not in this record.",
+  "private_half_location_class": "outside_both_repos",
+  "private_half_path_stated_in_report_only": true,
+  "generated_at_utc": "2026-08-13T22:26:28Z",
+  "generated_on_host": "anvil",
+  "encoding": "raw_32_byte_public_key_as_lowercase_hex"
+}

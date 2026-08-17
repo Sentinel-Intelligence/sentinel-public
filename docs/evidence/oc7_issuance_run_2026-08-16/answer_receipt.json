@@ -1,0 +1,41 @@
+{
+  "anchor_memo_class": null,
+  "anchor_status": "NOT_ANCHORED",
+  "anchor_tx_hash": null,
+  "anchored_artifact_hash": null,
+  "authenticity_notice": "A valid signature establishes that this record is authentic and has not been altered. It does not establish that the executed query answers the question as it was asked. No accuracy claim is made about this answer, and absolute accuracy claims for this system remain gated pending completion of the reference repair.",
+  "canonicalization_version": "sentinel-canon-v1",
+  "certification_date": "2026-08-15",
+  "confirmed_paraphrase": "Q1 — Stock Trade × Committee Jurisdiction. Question: Which legislators have traded stocks in companies under their committee's jurisdiction?",
+  "coverage_as_of": "2026-08-16T19:04:21Z",
+  "coverage_denominator": 1265,
+  "coverage_numerator": 149,
+  "entity_resolution_note": "Not applicable: Q1 matches Legislator, Company, and Committee nodes directly without entity resolution.",
+  "execution_timestamp": "2026-08-16T19:04:21Z",
+  "freshness_basis": "source_publication_date",
+  "ingest_high_water": {
+    "SERVES_ON": "2026-08-15",
+    "TRADED_STOCK": "2026-07-20"
+  },
+  "library_version": {
+    "id": "demo_query_runner_2026-08-15",
+    "manifest_sha256": "aa4a54d801d4f9ee3a42e7abdadaa4d3c01b0193db2b8701214df51592b11cb0",
+    "version": "v1.0.0"
+  },
+  "non_accusation_notice": "an edge records a public filing or disclosure. It is not a finding of wrongdoing or intent",
+  "outcome": "ANSWERED",
+  "question_hash": "f867e7a34a53e01c3f1f4221ffba0fa6c5b175a21a3a711f051122b7d9793c3c",
+  "receipt_id": "receipt-9b6a48042debea82",
+  "refusal_class": null,
+  "result_hash": "bdfdbab570ab82345f50a5473f2f83655a69ddf11a96585f31af6f3235492479",
+  "result_row_count": 20,
+  "role_direction_note": "Not applicable: Q1 does not apply a role filter. Traverses (Legislator)-[:TRADED_STOCK]->(Company) and (Legislator)-[:SERVES_ON]->(Committee).",
+  "schema_snapshot_sha256": "65a7fbe07e046e1fdcf66fde8e5ff467b2038e8dda3652cbf826c9e98887ad6d",
+  "signature": "0185f2bd46c7172bf1121de4cb51db14cd543e0029d7aeebec595ca7d64c75f96b8cfef7021439f224812d83a534b503c63c9ee2c258030ace7172229cb98201",
+  "signing_key_id": "receipt-ed25519-3a89049da148a9d4",
+  "template_id": "q1_trades_committee",
+  "touched_edge_classes": [
+    "SERVES_ON",
+    "TRADED_STOCK"
+  ]
+}

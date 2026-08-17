@@ -128,8 +128,9 @@ export default function HomePage() {
           </div>
         </div>
         <p className="text-gray-600 text-xs mt-3 max-w-xl">
-          Trace pages are permanent handles: if a claim is retired, the trace
-          resolves to the retraction, not a 404.
+          Trace pages are designed as permanent handles: when one is issued for a claim
+          unit, if the underlying claim is retired, the trace is intended to resolve to
+          the retraction rather than a 404.
         </p>
       </div>
 

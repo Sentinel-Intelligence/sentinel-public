@@ -293,7 +293,82 @@ export default function VerifyPage() {
         </p>
       </div>
 
-      {/* 1.6 Check a receipt's contents */}
+      {/* 1.6 Verify the signature */}
+      <div className="mb-12">
+        <h2 className="text-xl font-semibold text-cyan-300 mb-4">
+          Verify the signature
+        </h2>
+        <p className="text-gray-300 text-sm leading-relaxed mb-4">
+          Once the key has been accepted using the checks above, you can verify that the
+          receipt was signed with it. This check confirms the receipt has not been altered
+          since it was issued.
+        </p>
+        <p className="text-gray-300 text-sm leading-relaxed mb-3">
+          <strong className="text-gray-100">Dependency:</strong>{' '}
+          Python 3 and the{' '}
+          <code className="text-cyan-400 text-xs">cryptography</code> package.
+          Install it with:
+        </p>
+        <pre className="bg-gray-900 border border-gray-700 rounded p-4 text-xs text-cyan-200 font-mono overflow-x-auto mb-5">
+          pip install cryptography
+        </pre>
+        <p className="text-gray-300 text-sm leading-relaxed mb-2">
+          The verifier and a sample receipt are published in the public repository.
+          From the root of a cloned copy, run:
+        </p>
+        <pre className="bg-gray-900 border border-gray-700 rounded p-4 text-xs text-cyan-200 font-mono overflow-x-auto mb-5 whitespace-pre-wrap break-all">
+          {`python3 scripts/sentinel_canon_v1_verify.py verify docs/evidence/oc7_issuance_run_2026-08-16/answer_receipt.json`}
+        </pre>
+        <p className="text-gray-300 text-sm leading-relaxed mb-2">
+          <strong className="text-gray-100">Success looks like this (exit code 0).</strong>{' '}
+          Output below is from a run at sentinel-public HEAD, 2026-08-16. The{' '}
+          <code className="text-cyan-400 text-xs">public_key_record</code> field names the
+          key file the tool used; it shows the resolved path on the machine where the tool
+          ran and will show your own path when you run it.
+        </p>
+        <pre className="bg-gray-900 border border-gray-700 rounded p-4 text-xs text-cyan-200 font-mono overflow-x-auto mb-5 whitespace-pre-wrap break-all">
+          {`{
+  "canonicalization_version": "sentinel-canon-v1",
+  "cryptography_version": "46.0.7",
+  "ok": true,
+  "public_key_record": "/home/toasty/projects/sentinel-public/docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json",
+  "reason": "PASS: receipt_id match and Ed25519 signature valid",
+  "recomputed_receipt_id": "receipt-9b6a48042debea82",
+  "signing_canonical_len": 2032,
+  "signing_canonical_sha256": "cb6a764190dc5efbf0f5fb35ddfda08e4f8146f7bf485108f6d5000d4922ecb4",
+  "signing_key_id_announced": "receipt-ed25519-3a89049da148a9d4",
+  "signing_key_id_receipt": "receipt-ed25519-3a89049da148a9d4",
+  "stored_receipt_id": "receipt-9b6a48042debea82"
+}`}
+        </pre>
+        <p className="text-gray-300 text-sm leading-relaxed mb-2">
+          <strong className="text-gray-100">A receipt that has been altered exits 1.</strong>{' '}
+          Output below is from a run on a mutated copy of the same receipt, at
+          sentinel-public HEAD, 2026-08-16. The{' '}
+          <code className="text-cyan-400 text-xs">reason</code> field names the check that
+          failed.
+        </p>
+        <pre className="bg-gray-900 border border-gray-700 rounded p-4 text-xs text-cyan-200 font-mono overflow-x-auto mb-5 whitespace-pre-wrap break-all">
+          {`{
+  "canonicalization_version": "sentinel-canon-v1",
+  "cryptography_version": "46.0.7",
+  "ok": false,
+  "public_key_record": "/home/toasty/projects/sentinel-public/docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json",
+  "reason": "receipt_id mismatch: recomputed=receipt-3f0d7ce5b0b90aa5 stored=receipt-9b6a48042debea82",
+  "recomputed_receipt_id": "receipt-3f0d7ce5b0b90aa5",
+  "signing_canonical_len": 2032,
+  "signing_canonical_sha256": "ee7e1d05eea3200b7113b6e46bab6bf79c53651fd574c7a55b853b46d4838559",
+  "stored_receipt_id": "receipt-9b6a48042debea82"
+}`}
+        </pre>
+        <p className="text-gray-400 text-sm leading-relaxed">
+          The verifier is a convenience; the canonicalization rules it applies are the
+          authority, consistent with how this page frames the measurement script in the
+          section above.
+        </p>
+      </div>
+
+      {/* 1.7 Check a receipt's contents */}
       <div className="mb-12">
         <h2 className="text-xl font-semibold text-cyan-300 mb-4">
           Check a receipt&apos;s contents
@@ -339,7 +414,7 @@ export default function VerifyPage() {
         </p>
       </div>
 
-      {/* 1.7 The authenticity notice */}
+      {/* 1.8 The authenticity notice */}
       <div className="mb-12">
         <h2 className="text-xl font-semibold text-cyan-300 mb-4">The authenticity notice</h2>
         <p className="text-gray-300 text-sm leading-relaxed mb-4">
@@ -354,7 +429,7 @@ export default function VerifyPage() {
         </blockquote>
       </div>
 
-      {/* 1.8 What this proves and what it does not */}
+      {/* 1.9 What this proves and what it does not */}
       <div className="mb-12">
         <h2 className="text-xl font-semibold text-cyan-300 mb-4">
           What this proves and what it does not
@@ -362,13 +437,23 @@ export default function VerifyPage() {
         <div className="space-y-4">
           <p className="text-gray-300 text-sm leading-relaxed">
             <strong className="text-gray-100">
-              A receipt that passes every check above establishes four things.
+              A receipt that passes every check above lets a reader confirm two things
+              independently.
             </strong>{' '}
-            That a specific query, from a library of queries a person reviewed and certified
-            beforehand, was run at a recorded time. That it ran against a recorded snapshot
-            of the data structure. That the rows you hold are the rows it returned. And that
-            we signed the record with a key we announced publicly, on a ledger, before you
-            asked.
+            That the rows you hold are the rows it returned: the hash check above confirms
+            this without relying on us. And that the record was signed with a key we
+            announced publicly, on a ledger, before you asked: the signature check above
+            confirms this.
+          </p>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            <strong className="text-gray-100">
+              The receipt also carries two operator assertions under that signature.
+            </strong>{' '}
+            A reader who verifies the signature establishes that we committed to these
+            claims under the announced key; it does not establish that they occurred. That
+            a specific query, from a library of queries a person reviewed and certified
+            beforehand, was run at a recorded time. And that the query ran against a
+            recorded snapshot of the data structure.
           </p>
           <p className="text-gray-400 text-sm leading-relaxed">
             <strong className="text-gray-100">
@@ -401,7 +486,7 @@ export default function VerifyPage() {
         </div>
       </div>
 
-      {/* 1.9 If a check fails */}
+      {/* 1.10 If a check fails */}
       <div className="mb-12">
         <h2 className="text-xl font-semibold text-cyan-300 mb-4">If a check fails</h2>
         <div className="space-y-4">

@@ -24,6 +24,14 @@ server {
     index index.html;
     include snippets/sentinel-api-proxy.conf;
 
+    # Directory redirects must not carry the origin's scheme and port.
+    # nginx listens on 8080 behind a TLS-terminating tunnel, so an absolute
+    # redirect emits http://host:8080/path/ and downgrades the reader from
+    # HTTPS onto a non-standard port. Relative redirects preserve whatever
+    # scheme, host, and port the reader arrived on.
+    absolute_redirect off;
+    port_in_redirect off;
+
     # A path that does not exist returns 404, not the homepage.
     # The previous SPA-style fallback to /index.html made every missing
     # page answer 200 with the homepage body, which is how a missing
@@ -124,6 +132,27 @@ expect_status "verify page" "http://localhost:8080/verify/" "200"
 expect_status "verify page, no trailing slash redirects" "http://localhost:8080/verify" "301"
 expect_status_followed "verify page after following redirect" "http://localhost:8080/verify" "200"
 expect_status "nonexistent path" "http://localhost:8080/deploy-probe-path-that-does-not-exist" "404"
+
+# A redirect that succeeds after following can still be a downgrade.
+# Assert the Location value itself, not just the final status.
+REDIR="$(curl -sI http://localhost:8080/verify | tr -d '\r' | sed -n 's/^[Ll]ocation: //p')"
+case "$REDIR" in
+    http://*|https://*)
+        echo "[deploy]   FAIL directory redirect is absolute, downgrade risk behind the tunnel: $REDIR"
+        DEPLOY_FAIL=1
+        ;;
+    /*)
+        echo "[deploy]   OK   directory redirect is relative: $REDIR"
+        ;;
+    "")
+        echo "[deploy]   FAIL no redirect emitted for /verify"
+        DEPLOY_FAIL=1
+        ;;
+    *)
+        echo "[deploy]   FAIL directory redirect is not a relative path: $REDIR"
+        DEPLOY_FAIL=1
+        ;;
+esac
 
 VERIFY_BODY="$(curl -s http://localhost:8080/verify/ || true)"
 if printf '%s' "$VERIFY_BODY" | grep -q 'receipt-ed25519-3a89049da148a9d4'; then

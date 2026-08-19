@@ -17,8 +17,12 @@ payload with receipt_id and signature excluded.
 Signing bytes: canonical payload with signature excluded (receipt_id included),
 matching banked OC-7 answer/refusal_receipt_canonical_*. files.
 
-Signature: Ed25519 over signing bytes, verified against the announced public
-key record (default: docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json).
+Signature: Ed25519 over signing bytes. Key pinning is mandatory: the receipt
+must declare signing_key_id (a non-empty string) and the public key record
+must carry a key_id (a non-empty string); verification refuses if either is
+absent. When both are present they must match; a mismatch is refused before
+the signature is checked. Default public key record:
+docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json
 
 Dependency: Python 3 stdlib + cryptography (Ed25519). Proven with cryptography
 version printed on --version / verify output.
@@ -113,7 +117,11 @@ def verify_receipt(
     public_key_record: Path,
     expect_canonical_sha256: str | None = None,
 ) -> dict[str, Any]:
-    """Verify receipt_id and Ed25519 signature. Returns a result dict.
+    """Verify receipt_id and Ed25519 signature with mandatory key pinning.
+
+    The receipt must declare signing_key_id as a non-empty string. The public
+    key record must carry key_id as a non-empty string. Both must match. Any
+    absence or mismatch is refused before signature verification runs.
 
     On failure sets ok=False and reason; never raises for crypto mismatch
     (raises only on structural/IO errors that prevent running the check).
@@ -169,14 +177,25 @@ def verify_receipt(
     pub, pub_rec = load_public_key(public_key_record)
     result["signing_key_id_announced"] = pub_rec.get("key_id")
     result["signing_key_id_receipt"] = receipt.get("signing_key_id")
-    if (
-        receipt.get("signing_key_id")
-        and pub_rec.get("key_id")
-        and receipt.get("signing_key_id") != pub_rec.get("key_id")
-    ):
+
+    rec_key_id = pub_rec.get("key_id")
+    if not rec_key_id or not isinstance(rec_key_id, str):
         result["reason"] = (
-            f"signing_key_id mismatch: receipt={receipt.get('signing_key_id')!r} "
-            f"announced={pub_rec.get('key_id')!r}"
+            "public key record does not name its key: key_id field is absent or empty"
+        )
+        return result
+
+    signing_key_id = receipt.get("signing_key_id")
+    if not signing_key_id or not isinstance(signing_key_id, str):
+        result["reason"] = (
+            "receipt does not pin its signing key: signing_key_id field is absent or empty"
+        )
+        return result
+
+    if signing_key_id != rec_key_id:
+        result["reason"] = (
+            f"signing_key_id mismatch: receipt={signing_key_id!r} "
+            f"announced={rec_key_id!r}"
         )
         return result
 

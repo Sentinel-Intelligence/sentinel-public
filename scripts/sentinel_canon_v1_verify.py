@@ -17,12 +17,17 @@ payload with receipt_id and signature excluded.
 Signing bytes: canonical payload with signature excluded (receipt_id included),
 matching banked OC-7 answer/refusal_receipt_canonical_*. files.
 
-Signature: Ed25519 over signing bytes. Key pinning is mandatory: the receipt
-must declare signing_key_id (a non-empty string) and the public key record
-must carry a key_id (a non-empty string); verification refuses if either is
-absent. When both are present they must match; a mismatch is refused before
-the signature is checked. Default public key record:
-docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json
+Signature: Ed25519 over signing bytes. Key pinning is enforced at two levels.
+First, the verifier embeds the announced key material in PINNED_KEYS (a
+module-level constant mapping key_id to public_key_hex). Any record whose
+public_key_hex is not a pinned value is refused, as is any record whose
+key_id and public_key_hex do not belong to the same pinned entry. Key
+rotation requires changing this file and redeploying it.
+Second, the receipt must declare signing_key_id as a non-empty string and
+the public key record must carry key_id as a non-empty string; verification
+refuses if either is absent. When both are present they must match; a
+mismatch is refused before signature verification runs. Default public key
+record: docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json
 
 Dependency: Python 3 stdlib + cryptography (Ed25519). Proven with cryptography
 version printed on --version / verify output.
@@ -57,6 +62,16 @@ DEFAULT_PUBKEY_RECORD = (
     Path(__file__).resolve().parents[1]
     / "docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json"
 )
+
+# Announced key material pinned in this file so it is the single trust anchor.
+# Rotation: add a new entry. Do not edit existing entries while receipts
+# signed under the old key may still be verified. Removal of an entry
+# disables verification of receipts issued under that key.
+# Key rotation requires changing this file and redeploying it.
+# Hex values read from: docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json
+PINNED_KEYS: dict[str, str] = {
+    "receipt-ed25519-3a89049da148a9d4": "944a0bff9fa8cd3f6acd2d657a3f3adb1456d79b03f000405e0d4340d9afbe29",
+}
 
 
 class CanonError(ValueError):
@@ -119,9 +134,15 @@ def verify_receipt(
 ) -> dict[str, Any]:
     """Verify receipt_id and Ed25519 signature with mandatory key pinning.
 
-    The receipt must declare signing_key_id as a non-empty string. The public
-    key record must carry key_id as a non-empty string. Both must match. Any
-    absence or mismatch is refused before signature verification runs.
+    Two levels of pinning are enforced. First, the record's public_key_hex must
+    appear in PINNED_KEYS and its key_id must map to that same hex in PINNED_KEYS;
+    any record whose key material is not a pinned announced key is refused before
+    signature verification. Key rotation requires changing PINNED_KEYS in this
+    file.
+
+    Second, the receipt must declare signing_key_id as a non-empty string. The
+    public key record must carry key_id as a non-empty string. Both must match.
+    Any absence or mismatch is refused before signature verification runs.
 
     On failure sets ok=False and reason; never raises for crypto mismatch
     (raises only on structural/IO errors that prevent running the check).
@@ -182,6 +203,19 @@ def verify_receipt(
     if not rec_key_id or not isinstance(rec_key_id, str):
         result["reason"] = (
             "public key record does not name its key: key_id field is absent or empty"
+        )
+        return result
+
+    rec_hex = pub_rec.get("public_key_hex", "")
+    if rec_hex not in PINNED_KEYS.values():
+        result["reason"] = (
+            "record key material is not an announced key: public_key_hex is not pinned"
+        )
+        return result
+
+    if PINNED_KEYS.get(rec_key_id) != rec_hex:
+        result["reason"] = (
+            f"record pairs key_id {rec_key_id!r} with hex belonging to a different announced key"
         )
         return result
 

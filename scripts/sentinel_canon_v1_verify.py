@@ -70,6 +70,9 @@ DEFAULT_PUBKEY_RECORD = (
 # Key rotation requires changing this file and redeploying it.
 # Hex values read from: docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json
 PINNED_KEYS: dict[str, str] = {
+    # api-answer scope, D-2026-08-21-CC-RECEIPT-WIRE-UP. Hex value read from:
+    # docs/evidence/receipt_wire_up_2026-08-21/receipt_api_answer_public_v1_0_0.json
+    "receipt-ed25519-api-answer-97713e35aaf50dbb": "b824872881ce1a124ca8d4b748a3b0b09e4d3e9fc30a79d72c80c1d20799e2ee",
     "receipt-ed25519-3a89049da148a9d4": "944a0bff9fa8cd3f6acd2d657a3f3adb1456d79b03f000405e0d4340d9afbe29",
 }
 

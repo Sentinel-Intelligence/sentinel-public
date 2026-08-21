@@ -1,0 +1,12 @@
+{
+  "algorithm": "Ed25519",
+  "key_id": "receipt-ed25519-api-answer-97713e35aaf50dbb",
+  "label": "production",
+  "note": "Private half is not in this record and is never printed.",
+  "public_key_bytes": 32,
+  "public_key_hex": "b824872881ce1a124ca8d4b748a3b0b09e4d3e9fc30a79d72c80c1d20799e2ee",
+  "purpose": "receipt_signing_key_announcement",
+  "scope": "api-answer",
+  "seed_mode": "600",
+  "seed_path": "/etc/sentinel/receipt_api_answer.seed"
+}

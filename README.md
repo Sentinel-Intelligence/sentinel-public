@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Website](https://img.shields.io/badge/Web-sentinelintel.org-cyan)](https://sentinelintel.org)
-[![XRPL Provenance](https://img.shields.io/badge/XRPL-220%2B%20Proofs-purple)](https://livenet.xrpl.org/accounts/rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV)
+[![XRPL Provenance](https://img.shields.io/badge/XRPL-453_as_of_2026.08.23-purple)](https://livenet.xrpl.org/accounts/rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV)
 
 **Among the largest open graphs of congressional influence ever built.**
 
@@ -76,7 +76,7 @@ scripts/
 | Node Labels | 67 |
 | Relationship Types | 104 |
 | Legislators Scored (IES v3.5) | 1,228 / 1,228 (100%) |
-| XRPL Provenance Proofs | 295 (mainnet, verified) |
+| XRPL provenance anchors | 142 evidence-anchor, 311 graph-state, 453 family total as of 2026-08-23 (AccountSet tesSUCCESS; publicly checkable) |
 | SAME_AS Entity Resolution Edges | 46,695 |
 | Stock Trades (TRADED_STOCK) | 16,238 |
 

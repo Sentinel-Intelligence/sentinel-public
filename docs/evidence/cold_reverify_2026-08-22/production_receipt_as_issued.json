@@ -1,0 +1,12 @@
+{
+  "execution_timestamp": "2026-08-21T17:36:38Z",
+  "graph_state_id": "unsnapshotted",
+  "issuer": "sentinel-api",
+  "question_hash": "87e677c45e520119ebf0970970f70fe67c91bd282d66ea60012f622c4de1bca9",
+  "receipt_id": "receipt-9541f844bef33890",
+  "result_hash": "5267b2c03d0a5ebcdbf60ff69ca379645320de4f6773a99d5034a1d4f80b330b",
+  "schema_snapshot_sha256": "1350be2ae7bb8b95f00c43ed20c06b958e665ee5ef1d538c6de654a24acc8642",
+  "signature": "e5c3c362ccd652a1113c318bd869a654392b50ed0aedec6a1f6701169eb1c962173dcc6b293ab524e74d008c9df476ad35a6b8544a533aff2201834c34df2a01",
+  "signing_key_id": "receipt-ed25519-api-answer-97713e35aaf50dbb",
+  "verifier_version": "sentinel-canon-v1"
+}

@@ -58,10 +58,11 @@ except ImportError as e:  # pragma: no cover
     sys.exit(2)
 
 CANON_VERSION = "sentinel-canon-v1"
-DEFAULT_PUBKEY_RECORD = (
-    Path(__file__).resolve().parents[1]
-    / "docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json"
-)
+# No repository-relative default key path (D-2026-08-22-CC-VERIFIER-PIN-API-KEY,
+# cold-verify close ruling 3): a verifier that needs the repository to find its
+# own trust anchor is not the offline verifier the format claims. --public-key
+# is optional; when absent, the receipt's own signing_key_id is resolved
+# directly against PINNED_KEYS below -- see resolve_public_key().
 
 # Announced key material pinned in this file so it is the single trust anchor.
 # Rotation: add a new entry. Do not edit existing entries while receipts
@@ -69,11 +70,13 @@ DEFAULT_PUBKEY_RECORD = (
 # disables verification of receipts issued under that key.
 # Key rotation requires changing this file and redeploying it.
 # Hex values read from: docs/evidence/anchor_resume_2026-08-13/receipt_key_public_v1_0_1.json
+# and docs/evidence/D-2026-08-22-GB-API-KEY-ANNOUNCEMENT/receipt_api_answer_public_v1_0_1.json
 PINNED_KEYS: dict[str, str] = {
-    # api-answer scope, D-2026-08-21-CC-RECEIPT-WIRE-UP. Hex value read from:
-    # docs/evidence/receipt_wire_up_2026-08-21/receipt_api_answer_public_v1_0_0.json
-    "receipt-ed25519-api-answer-97713e35aaf50dbb": "b824872881ce1a124ca8d4b748a3b0b09e4d3e9fc30a79d72c80c1d20799e2ee",
     "receipt-ed25519-3a89049da148a9d4": "944a0bff9fa8cd3f6acd2d657a3f3adb1456d79b03f000405e0d4340d9afbe29",
+    # API-answer key, announced on-ledger 2026-08-22 (announcement_transaction_hash
+    # 8CAD54B178335E0ADCBA1AD3319CC776499EFA7233125FE6BCAED16683FB1A5A,
+    # D-2026-08-22-GB-API-KEY-ANNOUNCEMENT). Existing entry above is untouched.
+    "receipt-ed25519-api-answer-97713e35aaf50dbb": "b824872881ce1a124ca8d4b748a3b0b09e4d3e9fc30a79d72c80c1d20799e2ee",
 }
 
 
@@ -129,13 +132,58 @@ def load_public_key(record_path: Path) -> tuple[Ed25519PublicKey, dict]:
     return pub, rec
 
 
+def resolve_public_key(
+    receipt: dict, public_key_record: "Path | None"
+) -> "tuple[Ed25519PublicKey | None, dict | None, str | None]":
+    """Resolve the verifying key. Returns (pub, pub_rec, error_reason).
+
+    When public_key_record is given, behavior is unchanged from before this
+    dispatch: the record is read from disk and cross-checked against
+    PINNED_KEYS by the caller.
+
+    When public_key_record is None (no --public-key), no path relative to
+    the repository -- or anywhere else -- is read. The key is resolved
+    directly from PINNED_KEYS using the receipt's own signing_key_id: the
+    receipt names which announced key it claims, and the trust anchor is
+    the same PINNED_KEYS table either way, so no external record file is
+    needed to know that name maps to a pinned hex.  pub_rec is synthesized
+    as {key_id, public_key_hex} so the rest of verify_receipt's pinning
+    checks below run unchanged over either path.
+    """
+    if public_key_record is not None:
+        pub, pub_rec = load_public_key(public_key_record)
+        return pub, pub_rec, None
+
+    key_id = receipt.get("signing_key_id")
+    if not key_id or not isinstance(key_id, str):
+        return None, None, (
+            "no --public-key supplied and receipt does not pin its signing "
+            "key: signing_key_id field is absent or empty"
+        )
+    hex_key = PINNED_KEYS.get(key_id)
+    if hex_key is None:
+        return None, None, (
+            f"no --public-key supplied and signing_key_id {key_id!r} is not "
+            "a pinned announced key"
+        )
+    pub = Ed25519PublicKey.from_public_bytes(bytes.fromhex(hex_key))
+    pub_rec = {"key_id": key_id, "public_key_hex": hex_key}
+    return pub, pub_rec, None
+
+
 def verify_receipt(
     receipt: dict,
     *,
-    public_key_record: Path,
+    public_key_record: "Path | None" = None,
     expect_canonical_sha256: str | None = None,
 ) -> dict[str, Any]:
     """Verify receipt_id and Ed25519 signature with mandatory key pinning.
+
+    public_key_record is optional. When given, an explicit record file is
+    read and cross-checked against PINNED_KEYS (unchanged from before this
+    dispatch). When omitted, the key is resolved directly from PINNED_KEYS
+    by the receipt's own signing_key_id -- see resolve_public_key(). Either
+    way no path relative to the repository is constructed.
 
     Two levels of pinning are enforced. First, the record's public_key_hex must
     appear in PINNED_KEYS and its key_id must map to that same hex in PINNED_KEYS;
@@ -154,7 +202,11 @@ def verify_receipt(
         "ok": False,
         "canonicalization_version": CANON_VERSION,
         "cryptography_version": CRYPTO_VERSION,
-        "public_key_record": str(public_key_record),
+        "public_key_record": (
+            str(public_key_record)
+            if public_key_record is not None
+            else "PINNED_KEYS (no --public-key supplied)"
+        ),
     }
     if not isinstance(receipt, dict):
         result["reason"] = "receipt is not a JSON object"
@@ -198,7 +250,10 @@ def verify_receipt(
         )
         return result
 
-    pub, pub_rec = load_public_key(public_key_record)
+    pub, pub_rec, resolve_err = resolve_public_key(receipt, public_key_record)
+    if resolve_err is not None:
+        result["reason"] = resolve_err
+        return result
     result["signing_key_id_announced"] = pub_rec.get("key_id")
     result["signing_key_id_receipt"] = receipt.get("signing_key_id")
 
@@ -258,7 +313,7 @@ def cmd_verify(args: argparse.Namespace) -> int:
     receipt = json.loads(path.read_text(encoding="utf-8"))
     res = verify_receipt(
         receipt,
-        public_key_record=Path(args.public_key),
+        public_key_record=Path(args.public_key) if args.public_key else None,
         expect_canonical_sha256=args.expect_canonical_sha256,
     )
     print(json.dumps(res, indent=2, sort_keys=True))
@@ -334,9 +389,40 @@ def cmd_vector(args: argparse.Namespace) -> int:
     if signing_sha != vec["expected"]["canonical_bytes_for_signing_hex_sha256"]:
         print(f"FAIL signing sha {signing_sha}", file=sys.stderr)
         return 1
-    pub = Ed25519PublicKey.from_public_bytes(
-        bytes.fromhex(vec["test_key"]["public_key_hex"])
-    )
+
+    test_key = vec["test_key"]
+    # D-2026-08-22-CC-VERIFIER-PIN-API-KEY: additive, opt-in pinning check.
+    # Every vector banked before this dispatch has no "pinned" field, takes
+    # the branch below unchanged, and verifies its embedded test_key exactly
+    # as before -- this block does not run for them.
+    #
+    # A vector with "pinned": true is asserting its key_id is a REAL
+    # announced key, not a throwaway, and its verification must prove that
+    # by using ONLY PINNED_KEYS to resolve the verifying key -- the vector's
+    # own embedded public_key_hex is deliberately NOT trusted for this
+    # purpose (a vector file that could supply its own trusted hex could
+    # forge a "pinned" pass for an unpinned key, which would defeat the
+    # point). If key_id is not in PINNED_KEYS, the vector fails here. This
+    # is the only way `vector` can prove a claim about pinning rather than
+    # trusting whatever hex the vector file happens to carry; unmodified
+    # code with no "pinned" branch instead trusts test_key.public_key_hex
+    # unconditionally, which is why the same vector, given a public_key_hex
+    # that is NOT the real key (see the pinned vector's own comment),
+    # verifies here and fails signature verification there.
+    if test_key.get("pinned"):
+        key_id = test_key.get("key_id")
+        pinned_hex = PINNED_KEYS.get(key_id)
+        if pinned_hex is None:
+            print(
+                f"FAIL not pinned: key_id={key_id!r} is not in PINNED_KEYS",
+                file=sys.stderr,
+            )
+            return 1
+        pub = Ed25519PublicKey.from_public_bytes(bytes.fromhex(pinned_hex))
+    else:
+        pub = Ed25519PublicKey.from_public_bytes(
+            bytes.fromhex(test_key["public_key_hex"])
+        )
     try:
         pub.verify(bytes.fromhex(obj["signature"]), canonicalize(obj_for_signing))
     except InvalidSignature:
@@ -359,8 +445,13 @@ def main(argv: list[str] | None = None) -> int:
     v.add_argument("receipt")
     v.add_argument(
         "--public-key",
-        default=str(DEFAULT_PUBKEY_RECORD),
-        help="announced public key JSON record",
+        default=None,
+        help=(
+            "announced public key JSON record. Optional: no path relative "
+            "to the repository is used as a default. When omitted, the "
+            "key is resolved directly from PINNED_KEYS by the receipt's "
+            "own signing_key_id."
+        ),
     )
     v.add_argument(
         "--expect-canonical-sha256",

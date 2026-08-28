@@ -556,6 +556,106 @@ export default function VerifyPage() {
         </div>
       </div>
 
+      {/* Fourth check */}
+      <div className="mb-12">
+        <h2 className="text-xl font-semibold text-cyan-300 mb-4">
+          Fourth check: count the anchors yourself.
+        </h2>
+        <div className="space-y-4">
+          <p className="text-gray-300 text-sm leading-relaxed">
+            Wallet: rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV
+          </p>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            Public endpoint: https://xrplcluster.com/
+          </p>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            A transaction is included only when its decoded memo type is one of these eight:
+          </p>
+          <ul className="text-gray-300 text-sm leading-relaxed list-disc list-inside space-y-1">
+            <li>sentinel/evidence-anchor/v1</li>
+            <li>sentinel/graph-anchor/v1</li>
+            <li>sentinel/gatekeeper</li>
+            <li>smelt/governance</li>
+            <li>sentinel/trust-anchor/v1</li>
+            <li>smelt/wave-provenance/v1</li>
+            <li>sentinel/receipt-key/v1</li>
+            <li>LatticeProof</li>
+          </ul>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            It is not included because it is a wallet transaction. LatticeProof stays in the
+            eight even if your run measures zero.
+          </p>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            Fetch tools/anchor_proof_counter.py from
+            https://raw.githubusercontent.com/Sentinel-Intelligence/sentinel-public/main/tools/anchor_proof_counter.py.
+            You need python3. You do not need pip.
+          </p>
+          <pre className="bg-gray-900 border border-gray-700 rounded p-4 text-xs text-cyan-200 font-mono overflow-x-auto whitespace-pre-wrap break-all">
+            {`python3 tools/anchor_proof_counter.py --selftest
+python3 tools/anchor_proof_counter.py --wallet rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV --endpoint https://xrplcluster.com/ --out run.json`}
+          </pre>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            Expect SELFTEST PASSED, then a JSON artifact whose conservation_ok is true and
+            whose sum_buckets equals n_transactions.
+          </p>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            As of 2026-08-28 the banked snapshot is at least 3677 included of at least 3701
+            total wallet transactions. That snapshot is
+            docs/evidence/D-2026-08-28-GB-ANCHOR-LIVE-COUNT/run.json. Your later run should
+            meet or exceed both floors if the ledger only grew. A smaller included total
+            means a different inclusion rule or a failed fetch, not a passing check.
+          </p>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            Leftover buckets no_memo and undecodable_memo, and the five no-writer types, are
+            counted and not included. Add them to included_n. The sum is n_transactions.
+            STYX types are a separate population and are not this count.
+          </p>
+          <div className="bg-gray-900 border border-gray-700 rounded-lg p-5 overflow-x-auto">
+            <table className="text-gray-300 text-xs w-full">
+              <thead>
+                <tr className="text-gray-400 text-left">
+                  <th className="pr-4 pb-2">class</th>
+                  <th className="pr-4 pb-2">rule</th>
+                  <th className="pb-2">as-of 2026-08-28</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="pr-4 py-1">included eight</td>
+                  <td className="pr-4">in included_n</td>
+                  <td>3677</td>
+                </tr>
+                <tr>
+                  <td className="pr-4 py-1">no_memo</td>
+                  <td className="pr-4">leftover, not included</td>
+                  <td>11</td>
+                </tr>
+                <tr>
+                  <td className="pr-4 py-1">undecodable_memo</td>
+                  <td className="pr-4">leftover, not included</td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <td className="pr-4 py-1">five no-writer types</td>
+                  <td className="pr-4">named, not included</td>
+                  <td>8</td>
+                </tr>
+                <tr>
+                  <td className="pr-4 py-1">STYX</td>
+                  <td className="pr-4">separate population</td>
+                  <td>empty</td>
+                </tr>
+                <tr>
+                  <td className="pr-4 py-1">n_transactions</td>
+                  <td className="pr-4">conservation identity</td>
+                  <td>3701</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       {/* 1.10 If a check fails */}
       <div className="mb-12">
         <h2 className="text-xl font-semibold text-cyan-300 mb-4">If a check fails</h2>

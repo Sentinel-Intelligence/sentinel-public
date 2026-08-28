@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Website](https://img.shields.io/badge/Web-sentinelintel.org-cyan)](https://sentinelintel.org)
-[![XRPL Provenance](https://img.shields.io/badge/XRPL-453_as_of_2026.08.23-purple)](https://livenet.xrpl.org/accounts/rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV)
+[![XRPL Provenance](https://img.shields.io/badge/XRPL-3677_included_of_3701_as_of_2026.08.28-purple)](https://livenet.xrpl.org/accounts/rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV)
 
 **Among the largest open graphs of congressional influence ever built.**
 
@@ -16,7 +16,7 @@ Sentinel is a Neo4j knowledge graph that fuses 15+ public federal databases to m
 
 The system scores all 1,228 current and recent legislators with the **Influence Exposure Score (IES v3.5)**.
 
-Graph state is anchored to the XRP Ledger at intervals. As of 2026-08-13 the provenance wallet rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV carries 311 graph-state anchors, the earliest dated 2026-02-09 and the most recent 2026-07-27. An anchor records a hash of graph state at a point in time. It is not a per-node or per-edge certificate. See [docs/verification.md](docs/verification.md) for the public verification procedure.
+Graph state is anchored to the XRP Ledger at intervals. As of 2026-08-28 the provenance wallet rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV carries 311 graph-state anchors among 3677 included of 3701 wallet transactions. An anchor records a hash of graph state at a point in time. It is not a per-node or per-edge certificate. See [docs/verification.md](docs/verification.md) for the public verification procedure.
 
 ## Data Sources
 
@@ -76,7 +76,7 @@ scripts/
 | Node Labels | 67 |
 | Relationship Types | 104 |
 | Legislators Scored (IES v3.5) | 1,228 / 1,228 (100%) |
-| XRPL provenance anchors | 142 evidence-anchor, 311 graph-state, 453 family total as of 2026-08-23 (AccountSet tesSUCCESS; publicly checkable) |
+| XRPL provenance anchors | 3701 wallet transactions, 3677 included as of 2026-08-28: trust-anchor 3105, graph-state 311, evidence-anchor 142, governance 111, wave-provenance 5, receipt-key 2, gatekeeper 1, LatticeProof 0. Snapshot. Re-count with https://raw.githubusercontent.com/Sentinel-Intelligence/sentinel-public/main/tools/anchor_proof_counter.py |
 | SAME_AS Entity Resolution Edges | 46,695 |
 | Stock Trades (TRADED_STOCK) | 16,238 |
 

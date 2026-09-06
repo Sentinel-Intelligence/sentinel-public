@@ -158,8 +158,7 @@ def pin_line_check(receipt: dict, pin_path: Path) -> dict[str, Any]:
     pin_digest = hashlib.sha256(pin_path.read_bytes()).hexdigest()
     identity = receipt.get("certification_artifact_identity")
     if identity != pin_digest:
-        out["ok"] = True
-        out["reason"] = "pin_line not applicable"
+        out["reason"] = "pin file digest mismatch"
         return out
     cy = receipt.get("cited_cypher_sha256")
     mc = receipt.get("match_count")
@@ -198,7 +197,17 @@ def pin_line_check(receipt: dict, pin_path: Path) -> dict[str, Any]:
 
 
 
-def membership_check(receipt: dict, commitment: dict, pin_reference: str) -> dict[str, Any]:
+def payload_for_commitment_signing(commitment: dict) -> dict:
+    return {k: v for k, v in commitment.items() if k != "signature"}
+
+
+def membership_check(
+    receipt: dict,
+    commitment: dict,
+    pin_reference: str,
+    *,
+    pub: "Ed25519PublicKey | None" = None,
+) -> dict[str, Any]:
     """Set-membership against a set commitment. Distinct from per-receipt verify."""
     out: dict[str, Any] = {"ok": False, "check": "membership"}
     if not isinstance(commitment, dict):
@@ -207,6 +216,22 @@ def membership_check(receipt: dict, commitment: dict, pin_reference: str) -> dic
     sig = commitment.get("signature")
     if not isinstance(sig, str) or not sig:
         out["reason"] = "signature missing"
+        return out
+    if sig == "unsigned":
+        out["reason"] = "unsigned"
+        return out
+    if pub is None:
+        out["reason"] = "commitment public key required"
+        return out
+    try:
+        sig_bytes = bytes.fromhex(sig)
+    except ValueError:
+        out["reason"] = "signature is not valid lowercase hex"
+        return out
+    try:
+        pub.verify(sig_bytes, canonicalize(payload_for_commitment_signing(commitment)))
+    except InvalidSignature:
+        out["reason"] = "Ed25519 signature invalid under announced public key"
         return out
     size = commitment.get("set_size")
     ids = commitment.get("receipt_ids")
@@ -284,6 +309,7 @@ def verify_receipt(
     pin_file: "Path | None" = None,
     set_commitment: "Path | None" = None,
     pin_reference: str | None = None,
+    commitment_public_key: "Path | None" = None,
 ) -> dict[str, Any]:
     """Verify receipt_id and Ed25519 signature with mandatory key pinning.
 
@@ -331,7 +357,11 @@ def verify_receipt(
             result["reason"] = "pin-reference required with set-commitment"
             return result
         commitment = json.loads(Path(set_commitment).read_text(encoding="utf-8"))
-        mem = membership_check(receipt, commitment, pin_reference)
+        ckey = commitment_public_key if commitment_public_key is not None else public_key_record
+        cpub = None
+        if ckey is not None:
+            cpub, _crec = load_public_key(Path(ckey))
+        mem = membership_check(receipt, commitment, pin_reference, pub=cpub)
         result["membership_ok"] = mem["ok"]
         result["membership_reason"] = mem["reason"]
         if not mem["ok"]:
@@ -340,6 +370,10 @@ def verify_receipt(
             return result
     if not stored_sig or not isinstance(stored_sig, str):
         result["reason"] = "missing signature"
+        return result
+
+    if receipt.get("certification_artifact_anchor_reference") == "not-anchored" and pin_file is None:
+        result["reason"] = "pin-file required"
         return result
 
     if pin_file is not None:
@@ -455,6 +489,11 @@ def cmd_verify(args: argparse.Namespace) -> int:
         pin_file=Path(args.pin_file) if getattr(args, "pin_file", None) else None,
         set_commitment=Path(args.set_commitment) if getattr(args, "set_commitment", None) else None,
         pin_reference=args.pin_reference if getattr(args, "pin_reference", None) else None,
+        commitment_public_key=(
+            Path(args.commitment_public_key)
+            if getattr(args, "commitment_public_key", None)
+            else None
+        ),
     )
     print(json.dumps(res, indent=2, sort_keys=True))
     return 0 if res["ok"] else 1
@@ -612,9 +651,17 @@ def main(argv: list[str] | None = None) -> int:
         "--pin-file",
         default=None,
         help=(
-            "explicit pin-of-record compose.ndjson path. Required for the "
-            "pin-line recompute on not-anchored pin receipts. Shown receipts "
+            "explicit pin-of-record compose.ndjson path. Required for "
+            "not-anchored pin receipts. Omitting it refuses. Shown receipts "
             "do not require the named pin fields."
+        ),
+    )
+    v.add_argument(
+        "--commitment-public-key",
+        default=None,
+        help=(
+            "announced public key JSON for set-commitment Ed25519. "
+            "When omitted, --public-key is used for the commitment signature."
         ),
     )
 

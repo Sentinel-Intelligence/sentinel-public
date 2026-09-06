@@ -34,7 +34,7 @@ version printed on --version / verify output.
 
 Usage:
   python3 scripts/sentinel_canon_v1_verify.py verify RECEIPT.json \\
-      [--public-key PATH] [--expect-canonical-sha256 HEX]
+      [--public-key PATH] [--expect-canonical-sha256 HEX] [--pin-file PATH]
   python3 scripts/sentinel_canon_v1_verify.py vector VECTOR.json
   python3 scripts/sentinel_canon_v1_verify.py dump-canonical RECEIPT.json
 """
@@ -123,6 +123,111 @@ def compute_receipt_id(receipt: dict) -> str:
     return "receipt-" + digest[:16]
 
 
+def cited_cypher_digest(cited_cypher: Any) -> str:
+    """sha256 hex over canonical JSON of compose cited_cypher.
+
+    Rule: json.dumps(..., ensure_ascii=False, sort_keys=True,
+    separators=(",", ":"), allow_nan=False).encode("utf-8").
+    """
+    return hashlib.sha256(canonicalize(cited_cypher)).hexdigest()
+
+
+def _is_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def pin_line_check(receipt: dict, pin_path: Path) -> dict[str, Any]:
+    """Require and recompute named pin-receipt fields.
+
+    Applies when certification_artifact_anchor_reference is not-anchored
+    and certification_artifact_identity equals the sha256 of pin_path.
+    Shown and other non-not-anchored receipts do not require the fields.
+    """
+    out: dict[str, Any] = {"ok": False, "check": "pin_line"}
+    if not isinstance(receipt, dict):
+        out["reason"] = "receipt is not a JSON object"
+        return out
+    anchor = receipt.get("certification_artifact_anchor_reference")
+    if anchor != "not-anchored":
+        out["ok"] = True
+        out["reason"] = "pin_line not applicable"
+        return out
+    if not pin_path.is_file():
+        out["reason"] = "pin file missing"
+        return out
+    pin_digest = hashlib.sha256(pin_path.read_bytes()).hexdigest()
+    identity = receipt.get("certification_artifact_identity")
+    if identity != pin_digest:
+        out["ok"] = True
+        out["reason"] = "pin_line not applicable"
+        return out
+    cy = receipt.get("cited_cypher_sha256")
+    mc = receipt.get("match_count")
+    if not isinstance(cy, str) or not cy:
+        out["reason"] = "cited_cypher_sha256 missing or empty"
+        return out
+    if not _is_int(mc):
+        out["reason"] = "match_count not integer"
+        return out
+    question = receipt.get("question_hash")
+    found = None
+    for raw in pin_path.read_text(encoding="utf-8").splitlines():
+        if not raw.strip():
+            continue
+        rec = json.loads(raw)
+        if rec.get("question") == question:
+            found = rec
+            break
+    if found is None:
+        out["reason"] = "pin line missing for question_hash"
+        return out
+    want_cy = cited_cypher_digest(found.get("cited_cypher"))
+    want_mc = found.get("match_count")
+    if not _is_int(want_mc):
+        out["reason"] = "pin line match_count not integer"
+        return out
+    if cy != want_cy:
+        out["reason"] = "cited_cypher_sha256 mismatch"
+        return out
+    if mc != want_mc:
+        out["reason"] = "match_count mismatch"
+        return out
+    out["ok"] = True
+    out["reason"] = "pin_line PASS"
+    return out
+
+
+
+def membership_check(receipt: dict, commitment: dict, pin_reference: str) -> dict[str, Any]:
+    """Set-membership against a set commitment. Distinct from per-receipt verify."""
+    out: dict[str, Any] = {"ok": False, "check": "membership"}
+    if not isinstance(commitment, dict):
+        out["reason"] = "commitment is not an object"
+        return out
+    sig = commitment.get("signature")
+    if not isinstance(sig, str) or not sig:
+        out["reason"] = "signature missing"
+        return out
+    size = commitment.get("set_size")
+    ids = commitment.get("receipt_ids")
+    if size != 12 or not isinstance(ids, list) or len(ids) != 12:
+        out["reason"] = "set size is not twelve"
+        return out
+    if commitment.get("pin_reference") != pin_reference:
+        out["reason"] = "pin-reference mismatch"
+        return out
+    rid = receipt.get("receipt_id") if isinstance(receipt, dict) else None
+    if not isinstance(rid, str) or not rid:
+        out["reason"] = "candidate receipt_id missing"
+        return out
+    if rid not in ids:
+        out["reason"] = "receipt_id not in set"
+        return out
+    out["ok"] = True
+    out["reason"] = "membership PASS"
+    return out
+
+
 def load_public_key(record_path: Path) -> tuple[Ed25519PublicKey, dict]:
     rec = json.loads(record_path.read_text(encoding="utf-8"))
     hex_key = rec.get("public_key_hex")
@@ -176,6 +281,9 @@ def verify_receipt(
     *,
     public_key_record: "Path | None" = None,
     expect_canonical_sha256: str | None = None,
+    pin_file: "Path | None" = None,
+    set_commitment: "Path | None" = None,
+    pin_reference: str | None = None,
 ) -> dict[str, Any]:
     """Verify receipt_id and Ed25519 signature with mandatory key pinning.
 
@@ -217,9 +325,33 @@ def verify_receipt(
     if not stored_id or not isinstance(stored_id, str):
         result["reason"] = "missing receipt_id"
         return result
+
+    if set_commitment is not None:
+        if pin_reference is None:
+            result["reason"] = "pin-reference required with set-commitment"
+            return result
+        commitment = json.loads(Path(set_commitment).read_text(encoding="utf-8"))
+        mem = membership_check(receipt, commitment, pin_reference)
+        result["membership_ok"] = mem["ok"]
+        result["membership_reason"] = mem["reason"]
+        if not mem["ok"]:
+            result["ok"] = False
+            result["reason"] = mem["reason"]
+            return result
     if not stored_sig or not isinstance(stored_sig, str):
         result["reason"] = "missing signature"
         return result
+
+    if pin_file is not None:
+        pin_res = pin_line_check(receipt, Path(pin_file))
+        result["pin_line_ok"] = pin_res["ok"]
+        result["pin_line_reason"] = pin_res["reason"]
+        if not pin_res["ok"]:
+            result["ok"] = False
+            result["reason"] = pin_res["reason"]
+            return result
+
+    unsigned = stored_sig == "unsigned"
 
     try:
         signing_bytes = canonicalize(payload_for_signing(receipt))
@@ -248,6 +380,11 @@ def verify_receipt(
         result["reason"] = (
             f"receipt_id mismatch: recomputed={recomputed_id} stored={stored_id}"
         )
+        return result
+
+    if unsigned:
+        result["ok"] = False
+        result["reason"] = "unsigned"
         return result
 
     pub, pub_rec, resolve_err = resolve_public_key(receipt, public_key_record)
@@ -315,6 +452,9 @@ def cmd_verify(args: argparse.Namespace) -> int:
         receipt,
         public_key_record=Path(args.public_key) if args.public_key else None,
         expect_canonical_sha256=args.expect_canonical_sha256,
+        pin_file=Path(args.pin_file) if getattr(args, "pin_file", None) else None,
+        set_commitment=Path(args.set_commitment) if getattr(args, "set_commitment", None) else None,
+        pin_reference=args.pin_reference if getattr(args, "pin_reference", None) else None,
     )
     print(json.dumps(res, indent=2, sort_keys=True))
     return 0 if res["ok"] else 1
@@ -457,6 +597,25 @@ def main(argv: list[str] | None = None) -> int:
         "--expect-canonical-sha256",
         default=None,
         help="optional banked signing-canonical sha256 to cross-check",
+    )
+    v.add_argument(
+        "--set-commitment",
+        default=None,
+        help="set commitment JSON. Membership check is distinct from per-receipt verify.",
+    )
+    v.add_argument(
+        "--pin-reference",
+        default=None,
+        help="pin reference the reader holds, matched against the commitment pin_reference",
+    )
+    v.add_argument(
+        "--pin-file",
+        default=None,
+        help=(
+            "explicit pin-of-record compose.ndjson path. Required for the "
+            "pin-line recompute on not-anchored pin receipts. Shown receipts "
+            "do not require the named pin fields."
+        ),
     )
 
     d = sub.add_parser("dump-canonical", help="dump canonical bytes or hash")

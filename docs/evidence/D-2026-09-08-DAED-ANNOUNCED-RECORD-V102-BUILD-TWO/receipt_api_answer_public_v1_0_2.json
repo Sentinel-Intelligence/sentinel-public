@@ -1,0 +1,29 @@
+{
+  "algorithm": "Ed25519",
+  "announcement_transaction_hash": "9D09E50A5FF128B9BB60520C711F25AF106CDEC42FDC82EBC9D5F62E920229E7",
+  "commitment_authorities": [
+    {
+      "key_id": "commitment-ed25519-set-79e8f48e42bbfed0",
+      "public_key_hex": "9fd670d30339b5a62f27192cca4865bd6e20b8d03b892e070eb661bc0c580832",
+      "purpose": "commitment_signing_key_announcement",
+      "status": "announced"
+    }
+  ],
+  "dispatch": "D-2026-09-08-DAED-ANNOUNCED-RECORD-V102-BUILD-TWO",
+  "encoding": "raw_32_byte_public_key_as_lowercase_hex",
+  "generated_at_utc": "2026-08-22T17:13:35Z",
+  "generated_on_host": "anvil",
+  "key_id": "receipt-ed25519-api-answer-97713e35aaf50dbb",
+  "ledger": 106860918,
+  "note": "Production v1.0.2 carrying v1.0.1 receipt key entries and adding commitment_authorities from the operator public half. Not a draft. Publish remains a later dispatch. Private half is not in this record.",
+  "private_half_location_class": "outside_both_repos",
+  "private_half_path_stated_in_report_only": true,
+  "public_key_base64": "uCSHKIHOGhJMqNS3SKOwsJ5NPp/DCnnXLIDB0geZ4u4=",
+  "public_key_bytes": 32,
+  "public_key_hex": "b824872881ce1a124ca8d4b748a3b0b09e4d3e9fc30a79d72c80c1d20799e2ee",
+  "purpose": "receipt_signing_key_announcement",
+  "status": "announced",
+  "validity_end": null,
+  "validity_start": "2026-08-21T17:35:50Z",
+  "xrpl_wallet_identity": "rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV"
+}

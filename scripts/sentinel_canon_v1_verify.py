@@ -262,6 +262,33 @@ def load_public_key(record_path: Path) -> tuple[Ed25519PublicKey, dict]:
     return pub, rec
 
 
+def commitment_key_is_announced(crec: dict, announced_rec: "dict | None") -> tuple[bool, str]:
+    """True when the reader-supplied commitment key is a named authority.
+
+    Authority is what the announced receipt public-key record lists under
+    commitment_authorities (key_id and public_key_hex). PINNED_KEYS are
+    receipt signing keys and are not a commitment-authority table.
+    """
+    if announced_rec is None:
+        return False, "announced receipt public-key record required with commitment-public-key"
+    authorities = announced_rec.get("commitment_authorities")
+    if not isinstance(authorities, list) or not authorities:
+        return False, "commitment key not announced"
+    cid = crec.get("key_id")
+    chex = crec.get("public_key_hex")
+    if not isinstance(cid, str) or not cid or not isinstance(chex, str) or not chex:
+        return False, "commitment key not announced"
+    want = chex.lower()
+    for item in authorities:
+        if not isinstance(item, dict):
+            continue
+        aid = item.get("key_id")
+        ahex = item.get("public_key_hex")
+        if isinstance(aid, str) and aid == cid and isinstance(ahex, str) and ahex.lower() == want:
+            return True, "announced"
+    return False, "commitment key not announced"
+
+
 def resolve_public_key(
     receipt: dict, public_key_record: "Path | None"
 ) -> "tuple[Ed25519PublicKey | None, dict | None, str | None]":
@@ -357,10 +384,21 @@ def verify_receipt(
             result["reason"] = "pin-reference required with set-commitment"
             return result
         commitment = json.loads(Path(set_commitment).read_text(encoding="utf-8"))
-        ckey = commitment_public_key if commitment_public_key is not None else public_key_record
         cpub = None
-        if ckey is not None:
-            cpub, _crec = load_public_key(Path(ckey))
+        if commitment_public_key is not None:
+            cpub, crec = load_public_key(Path(commitment_public_key))
+            announced_rec = None
+            if public_key_record is not None:
+                _apub, announced_rec = load_public_key(Path(public_key_record))
+            ok_ann, why = commitment_key_is_announced(crec, announced_rec)
+            if not ok_ann:
+                result["membership_ok"] = False
+                result["membership_reason"] = why
+                result["ok"] = False
+                result["reason"] = why
+                return result
+        elif public_key_record is not None:
+            cpub, _crec = load_public_key(Path(public_key_record))
         mem = membership_check(receipt, commitment, pin_reference, pub=cpub)
         result["membership_ok"] = mem["ok"]
         result["membership_reason"] = mem["reason"]
@@ -661,7 +699,9 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help=(
             "announced public key JSON for set-commitment Ed25519. "
-            "When omitted, --public-key is used for the commitment signature."
+            "Must be named as a commitment authority on the announced "
+            "receipt public-key record. When omitted, --public-key is used "
+            "for the commitment signature."
         ),
     )
 

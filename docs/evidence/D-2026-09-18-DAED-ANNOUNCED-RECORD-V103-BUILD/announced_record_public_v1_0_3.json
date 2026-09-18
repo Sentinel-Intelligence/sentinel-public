@@ -1,0 +1,39 @@
+{
+  "algorithm": "Ed25519",
+  "announcement_transaction_hash": "C1E819016EEFF86C723BFF0E5FD0F05A2204EAC1A120EE2715E40DE667A3072B",
+  "commitment_authorities": [
+    {
+      "key_id": "commitment-ed25519-set-79e8f48e42bbfed0",
+      "public_key_hex": "9fd670d30339b5a62f27192cca4865bd6e20b8d03b892e070eb661bc0c580832",
+      "purpose": "commitment_signing_key_announcement",
+      "status": "announced"
+    }
+  ],
+  "dispatch": "D-2026-09-18-DAED-PACK-REPAIR-RESTAGE-AND-PUBLISH",
+  "encoding": "raw_32_byte_public_key_as_lowercase_hex",
+  "generated_at_utc": "2026-08-13T22:26:28Z",
+  "generated_on_host": "anvil",
+  "key_id": "receipt-ed25519-3a89049da148a9d4",
+  "ledger": 106275292,
+  "note": "Production v1.0.3 restage: top-level announcement binding is the typed-pin receipt key from docs/evidence/D-2026-09-06-HEAVY-LIVE-VERIFIER-ATTACK/receipt_key_public_v1_0_1.json. Both receipt keys are listed in receipt_signing_keys. commitment_authorities carried from v1.0.2. Not a draft. Publish is this host act. Private half is not in this record.",
+  "private_half_location_class": "outside_both_repos",
+  "private_half_path_stated_in_report_only": true,
+  "public_key_base64": "lEoL/5+ozT9qzS1lej862xRW15sD8ABAXg1DQNmvvik=",
+  "public_key_bytes": 32,
+  "public_key_hex": "944a0bff9fa8cd3f6acd2d657a3f3adb1456d79b03f000405e0d4340d9afbe29",
+  "purpose": "receipt_signing_key_announcement",
+  "receipt_signing_keys": [
+    {
+      "key_id": "receipt-ed25519-3a89049da148a9d4",
+      "public_key_hex": "944a0bff9fa8cd3f6acd2d657a3f3adb1456d79b03f000405e0d4340d9afbe29"
+    },
+    {
+      "key_id": "receipt-ed25519-api-answer-97713e35aaf50dbb",
+      "public_key_hex": "b824872881ce1a124ca8d4b748a3b0b09e4d3e9fc30a79d72c80c1d20799e2ee"
+    }
+  ],
+  "status": "announced",
+  "validity_end": null,
+  "validity_start": "2026-08-13T22:26:28Z",
+  "xrpl_wallet_identity": "rLFteU7TV2dP2UNteJPFJE8h8sJjPjqkLV"
+}

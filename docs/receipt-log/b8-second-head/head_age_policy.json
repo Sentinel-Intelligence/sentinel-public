@@ -1,0 +1,6 @@
+{
+ "maximum_head_age_hours": 24,
+ "published_time_field": "timestamp",
+ "clock_skew_tolerance_seconds": 300,
+ "unit_note": "hours for the maximum; seconds for skew"
+}

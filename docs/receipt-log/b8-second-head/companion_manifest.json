@@ -1,0 +1,27 @@
+{
+ "version": "sentinel/receipt-log-companion-manifest/v1",
+ "head_binding": {
+  "signing_key_id": "receipt-ed25519-api-answer-97713e35aaf50dbb",
+  "tree_size": 36170,
+  "sha256_root_hash": "83480a0c8e9da60bd5a48bd5280f9c050ec10d126214d6dfca00f1d26342fef2",
+  "timestamp": "2026-09-18T04:27:32Z",
+  "canonical_head_sha256": "c6fd708a4d8536c720c1d4a6a604e59ece679fff14b318a4dd451bb2d40b3168"
+ },
+ "companions": [
+  {
+   "path": "anchors.json",
+   "content_sha256": "460d550a5f626ae7df909067956237bd057b86c97769951bd815face2e7772f0"
+  },
+  {
+   "path": "head_age_policy.json",
+   "content_sha256": "265f55821999260e63e011187243e62bd3af1a0aba9ad58132a2999f8454c8d3"
+  },
+  {
+   "path": "log_public_key.json",
+   "content_sha256": "b0dab99b5414cfd9b03cc1c15c3e95b1575dec93955867976b59f4dac21d77ac"
+  }
+ ],
+ "add_companion_rule": "a new companion path may be added only by publishing a new manifest version that lists the new path and digest, signed by the same log key, with head_binding equal to the current signed head; readers refuse companions not named in the verified manifest for that head",
+ "signature": "284921183eb3c8fc1278acf09db05ff3187266435ec405c4c15f3de4e390895a07870ee0676e15283dfa2feb52834b53c5e2aaa5a398888593f11dc0969e990f",
+ "signing_key_id": "receipt-ed25519-api-answer-97713e35aaf50dbb"
+}

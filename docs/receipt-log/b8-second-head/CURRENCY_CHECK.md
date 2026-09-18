@@ -12,9 +12,16 @@ Surfaces (files in this directory, invoked via `receipt_log.py`):
 
 Map-digest recompute is necessary and insufficient under a sole signer.
 
-Ordered reader steps (design revision 8 currency artifact):
+Pinned expected head-age policy values (amendment v1.0.3 section 3.4). A stranger compares these to `head_age_policy.json` after bootstrap. If they differ: FAILURE: policy-pin-mismatch.
 
-1. Verify the signature on H with the announced log key. If a last accepted head is stored, verify RFC 9162 consistency from that head to H. If no numeric maximum head age is configured, stop with FAILURE: head-age-unconfigured.
+- maximum_head_age_hours: 24
+- clock_skew_tolerance_seconds: 300
+- published_time_field: timestamp
+
+Ordered reader steps (design revision 8 currency artifact, with amendment v1.0.3 bootstrap and age rule):
+
+0. Ordered bootstrap (amendment section 1.4). Fail closed on any of: FAILURE: companion-key-unreadable; FAILURE: companion-manifest-missing; FAILURE: companion-manifest-verify; FAILURE: companion-digest-mismatch; FAILURE: companion-manifest-head-mismatch; FAILURE: head-signature-verify; FAILURE: companion-key-drift; FAILURE: companion-unmanifested. Only after bootstrap success may the reader trust companion bytes listed in the verified manifest.
+1. Load `head_age_policy.json` only if listed and digest-matched in that verified manifest. Apply section 3.4 pin checks (expected values above). If `maximum_head_age_hours` is not 24, or `clock_skew_tolerance_seconds` is not 300, or `published_time_field` is not timestamp: FAILURE: policy-pin-mismatch. Age the head from the signed field `timestamp` only (section 2). If `timestamp` is absent, empty, or not parseable: FAILURE: published-time-missing. If `timestamp` is strictly greater than reader now plus `clock_skew_tolerance_seconds` seconds: FAILURE: clock-skew. Compute age as reader now minus `timestamp`. If age is greater than `maximum_head_age_hours` converted to seconds: FAILURE: head-stale; refresh get-STH before any currency accept. Skew tolerance does not widen the maximum age. If the policy is missing, unreadable, or the field is not a positive integer: FAILURE: head-age-unconfigured.
 2. Recompute every head field the signature covers. Recompute supersession_counts_sha256 from the published map and require equality. On mismatch: FAILURE: head-map-digest.
 3. Run the reissue census reader check (banked sidecar pin first).
 4. From the leaf, check receipt_id equals receipt- plus the first sixteen hex of id_derivation_sha256, signature_present is signature-present, signing_key_id nonempty.

@@ -289,6 +289,34 @@ def commitment_key_is_announced(crec: dict, announced_rec: "dict | None") -> tup
     return False, "commitment key not announced"
 
 
+def match_announced_receipt_key(pub_rec: dict, signing_key_id: str) -> tuple[str | None, str | None, str | None]:
+    """Return (matched_id, matched_hex, error_reason) for design 3.2.B.
+
+    A receipt signing_key_id is announced when it equals the top-level key_id
+    with pinned material, or when it equals an item key_id in
+    receipt_signing_keys whose material is pinned for that id.
+    """
+    rec_key_id = pub_rec.get("key_id")
+    rec_hex = pub_rec.get("public_key_hex", "")
+    if rec_key_id == signing_key_id:
+        if rec_hex in PINNED_KEYS.values() and PINNED_KEYS.get(rec_key_id) == rec_hex:
+            return rec_key_id, rec_hex, None
+    items = pub_rec.get("receipt_signing_keys")
+    if isinstance(items, list):
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            iid = item.get("key_id")
+            ihex = item.get("public_key_hex")
+            if iid == signing_key_id and isinstance(ihex, str) and ihex:
+                if ihex in PINNED_KEYS.values() and PINNED_KEYS.get(iid) == ihex:
+                    return iid, ihex, None
+    return None, None, (
+        f"signing_key_id mismatch: receipt={signing_key_id!r} "
+        f"announced={rec_key_id!r}"
+    )
+
+
 def resolve_public_key(
     receipt: dict, public_key_record: "Path | None"
 ) -> "tuple[Ed25519PublicKey | None, dict | None, str | None]":
@@ -493,12 +521,13 @@ def verify_receipt(
         )
         return result
 
-    if signing_key_id != rec_key_id:
-        result["reason"] = (
-            f"signing_key_id mismatch: receipt={signing_key_id!r} "
-            f"announced={rec_key_id!r}"
-        )
+    matched_id, matched_hex, match_err = match_announced_receipt_key(pub_rec, signing_key_id)
+    if match_err is not None:
+        result["reason"] = match_err
         return result
+    result["signing_key_id_announced"] = matched_id
+    if matched_hex != rec_hex:
+        pub = Ed25519PublicKey.from_public_bytes(bytes.fromhex(matched_hex))
 
     try:
         sig = bytes.fromhex(stored_sig)

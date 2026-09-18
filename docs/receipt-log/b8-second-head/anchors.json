@@ -1,0 +1,8 @@
+{
+ "xrpl_transaction_identity": "872FB57C4C073D6415FD7B008EA53C10596476FFC6EEA89956B4B6A33CDC16DA",
+ "opentimestamps_stamp_path": "docs/receipt-log/b8-second-head/sth_hash.bin.ots",
+ "head_sha256": "041b4b54d4da6f93b3571c231cb2cc22205548a67738ece265b8b52f080ffb65",
+ "shape_note": "Design revision 8 names no locator object shape; this object has the two locators plus the head sha256.",
+ "xrpl_source": "docs/evidence/D-2026-09-17-DAED-B8-HEAD-PUBLISH/tx_hash.txt",
+ "ots_source": "docs/evidence/D-2026-09-17-DAED-B8-HEAD-PUBLISH/sth_hash.bin.ots"
+}

@@ -1,0 +1,9 @@
+{
+ "algorithm": "Ed25519",
+ "encoding": "raw_32_byte_public_key_as_lowercase_hex",
+ "key_id": "receipt-ed25519-api-answer-97713e35aaf50dbb",
+ "public_key_bytes": 32,
+ "public_key_hex": "b824872881ce1a124ca8d4b748a3b0b09e4d3e9fc30a79d72c80c1d20799e2ee",
+ "note": "Verifies the B-8 second head at sth.json on this path.",
+ "source": "docs/evidence/D-2026-09-08-DAED-ANNOUNCED-RECORD-V102-BUILD-TWO/receipt_api_answer_public_v1_0_2.json"
+}

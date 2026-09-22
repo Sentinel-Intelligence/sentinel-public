@@ -32,9 +32,9 @@ export default function ApiDocsPage() {
         future API must carry that limit inside the answer unit.
       </p>
       <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 text-center mb-8">
-        <div className="text-cyan-400 font-bold mb-2">Research data requests</div>
+        <div className="text-cyan-400 font-bold mb-2">Research partnerships</div>
         <p className="text-gray-400 text-sm mb-4">
-          For bulk exports or research partnerships, email us. Response is not guaranteed
+          For research partnerships, email us. Response is not guaranteed
           on a SLA.
         </p>
         <a

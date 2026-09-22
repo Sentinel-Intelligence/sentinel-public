@@ -12,7 +12,7 @@
 
 ## What is Sentinel?
 
-Sentinel is a Neo4j knowledge graph that fuses 15+ public federal databases to map influence networks in the U.S. Congress. Every legislator, company, PAC, lobbyist, trade, donation, and committee relationship is connected in a single queryable graph.
+Sentinel is a Neo4j knowledge graph that fuses 15+ public federal databases to map influence networks in the U.S. Congress. Every legislator, company, PAC, lobbyist, trade, donation, and committee relationship is connected in a single graph.
 
 The system scores all 1,228 current and recent legislators with the **Influence Exposure Score (IES v3.5)**.
 
@@ -22,7 +22,6 @@ Graph state is anchored to the XRP Ledger at intervals. As of 2026-08-28 the pro
 
 | Source | Records | Type |
 |--------|---------|------|
-| FEC Contributions | 719K+ donations | Campaign finance |
 | House PTR / Senate eFD | 16,381 trades | Stock trading disclosures |
 | Lobbying Disclosure Act | 574K+ lobbying edges | Lobbying activity |
 | FARA | Foreign agent registrations | Foreign influence |
